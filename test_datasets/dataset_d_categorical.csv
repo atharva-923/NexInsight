@@ -1,0 +1,451 @@
+Account_Tier,Primary_Industry,Payment_Method,Support_Level,Contract_Renewal_Term,Churn_Risk_Status,NPS_Category
+Free,Manufacturing,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Enterprise,Healthcare,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Premium,Education,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Enterprise,Healthcare,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Free,Education,Wire Transfer,Basic,Multi-Year,Low Risk,Passive
+Enterprise,FinTech,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Premium,Healthcare,ACH,Basic,Monthly,Low Risk,Promoter
+Premium,Healthcare,Credit Card,Priority,Multi-Year,Low Risk,Promoter
+Free,E-commerce,ACH,Priority,Multi-Year,Low Risk,Passive
+Premium,Media,ACH,Basic,Annual,Medium Risk,Detractor
+Enterprise,Healthcare,ACH,Priority,Annual,Medium Risk,Promoter
+Standard,Manufacturing,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Standard,Education,Credit Card,Basic,Annual,High Risk,Passive
+Enterprise,FinTech,ACH,Basic,Multi-Year,Low Risk,Passive
+Standard,Manufacturing,ACH,Basic,Annual,High Risk,Promoter
+Standard,Manufacturing,PayPal,Priority,Monthly,Medium Risk,Passive
+Standard,Manufacturing,ACH,Priority,Multi-Year,Medium Risk,Promoter
+Enterprise,Manufacturing,Credit Card,Dedicated Manager,Annual,Low Risk,Promoter
+Free,FinTech,ACH,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,E-commerce,Wire Transfer,Basic,Annual,Low Risk,Detractor
+Standard,Media,Wire Transfer,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Premium,Healthcare,ACH,Priority,Annual,Low Risk,Promoter
+Standard,Manufacturing,Wire Transfer,Dedicated Manager,Monthly,Medium Risk,Promoter
+Enterprise,Healthcare,Wire Transfer,Priority,Annual,Low Risk,Detractor
+Enterprise,Healthcare,Credit Card,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,Manufacturing,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Standard,E-commerce,Wire Transfer,Priority,Monthly,Low Risk,Promoter
+Free,Healthcare,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Passive
+Free,Education,PayPal,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,Healthcare,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Enterprise,Media,Wire Transfer,Basic,Multi-Year,Medium Risk,Promoter
+Premium,Manufacturing,ACH,Dedicated Manager,Monthly,Low Risk,Detractor
+Free,FinTech,Wire Transfer,Priority,Multi-Year,Low Risk,Passive
+Free,Healthcare,ACH,Dedicated Manager,Multi-Year,Medium Risk,Passive
+Standard,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Detractor
+Standard,Education,ACH,Dedicated Manager,Annual,High Risk,Detractor
+Free,Education,PayPal,Dedicated Manager,Monthly,High Risk,Promoter
+Premium,FinTech,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Enterprise,Media,Wire Transfer,Basic,Annual,Low Risk,Promoter
+Standard,FinTech,Credit Card,Basic,Annual,Low Risk,Promoter
+Premium,Media,PayPal,Basic,Annual,Medium Risk,Detractor
+Free,Healthcare,Credit Card,Priority,Monthly,Low Risk,Promoter
+Premium,Manufacturing,Credit Card,Basic,Annual,Low Risk,Promoter
+Standard,E-commerce,ACH,Basic,Annual,Medium Risk,Promoter
+Free,Education,PayPal,Priority,Annual,Low Risk,Passive
+Enterprise,FinTech,Credit Card,Basic,Multi-Year,Medium Risk,Promoter
+Standard,E-commerce,Wire Transfer,Dedicated Manager,Monthly,Medium Risk,Passive
+Premium,Media,Credit Card,Basic,Monthly,Low Risk,Detractor
+Free,Manufacturing,PayPal,Basic,Multi-Year,Medium Risk,Passive
+Free,Education,Wire Transfer,Basic,Annual,Medium Risk,Promoter
+Free,Education,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Standard,Media,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,Manufacturing,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Free,Education,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Standard,Manufacturing,ACH,Priority,Monthly,High Risk,Passive
+Standard,Education,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Healthcare,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,Media,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Enterprise,Manufacturing,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Standard,E-commerce,PayPal,Priority,Monthly,High Risk,Passive
+Standard,Healthcare,Wire Transfer,Basic,Multi-Year,Medium Risk,Passive
+Free,E-commerce,Credit Card,Basic,Annual,Low Risk,Passive
+Free,Media,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,Education,Credit Card,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,E-commerce,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Free,Healthcare,PayPal,Basic,Multi-Year,Low Risk,Promoter
+Free,Manufacturing,Wire Transfer,Basic,Monthly,Low Risk,Detractor
+Premium,FinTech,PayPal,Dedicated Manager,Monthly,High Risk,Promoter
+Free,E-commerce,PayPal,Basic,Monthly,Low Risk,Detractor
+Free,FinTech,Wire Transfer,Priority,Annual,Medium Risk,Promoter
+Free,Media,PayPal,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Premium,E-commerce,PayPal,Dedicated Manager,Monthly,Low Risk,Passive
+Free,E-commerce,Credit Card,Priority,Multi-Year,Medium Risk,Passive
+Standard,Manufacturing,Credit Card,Priority,Multi-Year,Low Risk,Promoter
+Standard,Education,PayPal,Basic,Multi-Year,Medium Risk,Passive
+Standard,Healthcare,ACH,Priority,Monthly,Low Risk,Passive
+Standard,Healthcare,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Healthcare,PayPal,Basic,Monthly,Medium Risk,Promoter
+Free,Media,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Free,Education,Credit Card,Basic,Monthly,Medium Risk,Promoter
+Free,FinTech,Wire Transfer,Basic,Monthly,High Risk,Passive
+Free,Healthcare,PayPal,Basic,Multi-Year,Low Risk,Promoter
+Free,FinTech,PayPal,Basic,Multi-Year,Low Risk,Promoter
+Free,Education,PayPal,Priority,Monthly,Low Risk,Promoter
+Standard,Media,PayPal,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,Education,ACH,Dedicated Manager,Monthly,Medium Risk,Promoter
+Free,Manufacturing,ACH,Priority,Monthly,Low Risk,Promoter
+Premium,Healthcare,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Free,Media,PayPal,Basic,Monthly,Medium Risk,Detractor
+Free,Manufacturing,ACH,Basic,Annual,Low Risk,Promoter
+Standard,Healthcare,Wire Transfer,Basic,Multi-Year,Medium Risk,Passive
+Free,Education,PayPal,Priority,Annual,Low Risk,Promoter
+Free,Education,Credit Card,Basic,Multi-Year,High Risk,Promoter
+Standard,E-commerce,PayPal,Basic,Annual,Low Risk,Promoter
+Enterprise,E-commerce,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Premium,Education,ACH,Basic,Monthly,Low Risk,Detractor
+Free,Education,PayPal,Basic,Annual,Low Risk,Detractor
+Premium,FinTech,ACH,Dedicated Manager,Annual,High Risk,Passive
+Premium,FinTech,PayPal,Priority,Multi-Year,Low Risk,Passive
+Standard,Manufacturing,Wire Transfer,Basic,Multi-Year,Medium Risk,Promoter
+Premium,E-commerce,PayPal,Basic,Annual,Low Risk,Promoter
+Standard,E-commerce,ACH,Basic,Multi-Year,Low Risk,Detractor
+Free,Education,ACH,Basic,Monthly,Low Risk,Passive
+Standard,Education,Wire Transfer,Dedicated Manager,Annual,Low Risk,Passive
+Standard,Manufacturing,PayPal,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,Media,Credit Card,Dedicated Manager,Annual,Low Risk,Promoter
+Standard,Media,PayPal,Dedicated Manager,Monthly,High Risk,Detractor
+Enterprise,Media,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Enterprise,E-commerce,Credit Card,Basic,Multi-Year,Low Risk,Promoter
+Premium,FinTech,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Media,PayPal,Basic,Monthly,Low Risk,Passive
+Enterprise,Healthcare,Credit Card,Priority,Annual,High Risk,Promoter
+Free,Manufacturing,Wire Transfer,Basic,Monthly,Low Risk,Passive
+Free,Media,ACH,Basic,Monthly,Low Risk,Promoter
+Standard,Healthcare,Credit Card,Dedicated Manager,Monthly,Low Risk,Detractor
+Premium,Media,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Passive
+Standard,FinTech,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Premium,FinTech,ACH,Basic,Monthly,Low Risk,Passive
+Free,Media,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Free,Healthcare,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Premium,Manufacturing,Credit Card,Dedicated Manager,Annual,Medium Risk,Detractor
+Free,Healthcare,Credit Card,Priority,Multi-Year,Low Risk,Promoter
+Free,Manufacturing,Credit Card,Basic,Monthly,Medium Risk,Promoter
+Free,Media,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,Manufacturing,PayPal,Basic,Monthly,Medium Risk,Promoter
+Premium,Education,PayPal,Priority,Annual,Low Risk,Detractor
+Free,E-commerce,ACH,Basic,Multi-Year,Low Risk,Promoter
+Standard,E-commerce,ACH,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Free,FinTech,Wire Transfer,Basic,Multi-Year,Low Risk,Detractor
+Premium,Education,Credit Card,Basic,Monthly,Low Risk,Promoter
+Free,E-commerce,ACH,Priority,Multi-Year,Low Risk,Promoter
+Standard,Media,Wire Transfer,Priority,Monthly,Low Risk,Detractor
+Premium,Manufacturing,PayPal,Basic,Annual,Low Risk,Promoter
+Free,Manufacturing,PayPal,Basic,Multi-Year,Low Risk,Promoter
+Premium,Healthcare,PayPal,Basic,Monthly,Medium Risk,Promoter
+Standard,Healthcare,PayPal,Priority,Multi-Year,Low Risk,Passive
+Standard,Manufacturing,Wire Transfer,Priority,Multi-Year,Low Risk,Passive
+Free,Media,Credit Card,Basic,Annual,Low Risk,Promoter
+Enterprise,Manufacturing,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Premium,Healthcare,Credit Card,Dedicated Manager,Annual,Low Risk,Detractor
+Free,E-commerce,PayPal,Priority,Multi-Year,Medium Risk,Passive
+Free,FinTech,ACH,Priority,Multi-Year,Low Risk,Passive
+Premium,Healthcare,ACH,Priority,Multi-Year,Low Risk,Passive
+Standard,Media,ACH,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Premium,E-commerce,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Passive
+Standard,E-commerce,PayPal,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Premium,E-commerce,Wire Transfer,Basic,Annual,Medium Risk,Promoter
+Free,Education,ACH,Basic,Annual,Low Risk,Passive
+Free,Education,Credit Card,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,E-commerce,ACH,Basic,Multi-Year,Low Risk,Detractor
+Enterprise,Media,Wire Transfer,Basic,Annual,Low Risk,Promoter
+Free,Manufacturing,PayPal,Basic,Multi-Year,Low Risk,Detractor
+Standard,Media,Wire Transfer,Dedicated Manager,Multi-Year,Medium Risk,Detractor
+Standard,Education,PayPal,Priority,Annual,Low Risk,Promoter
+Standard,Healthcare,PayPal,Dedicated Manager,Multi-Year,Low Risk,Passive
+Premium,Education,PayPal,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Manufacturing,ACH,Basic,Annual,Medium Risk,Detractor
+Free,FinTech,Wire Transfer,Basic,Monthly,Low Risk,Promoter
+Enterprise,Education,ACH,Priority,Monthly,Medium Risk,Passive
+Premium,Media,Wire Transfer,Priority,Monthly,Low Risk,Promoter
+Premium,Media,Credit Card,Priority,Monthly,Low Risk,Promoter
+Standard,E-commerce,Credit Card,Priority,Multi-Year,Medium Risk,Promoter
+Premium,E-commerce,Wire Transfer,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,E-commerce,Wire Transfer,Priority,Monthly,Low Risk,Passive
+Free,FinTech,Wire Transfer,Dedicated Manager,Annual,Low Risk,Passive
+Premium,Manufacturing,Wire Transfer,Basic,Annual,Medium Risk,Passive
+Free,Healthcare,PayPal,Priority,Annual,Low Risk,Promoter
+Free,Media,ACH,Basic,Annual,Low Risk,Promoter
+Premium,Media,PayPal,Basic,Multi-Year,High Risk,Promoter
+Premium,Manufacturing,ACH,Dedicated Manager,Annual,Low Risk,Passive
+Free,FinTech,ACH,Priority,Annual,Low Risk,Detractor
+Premium,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,Manufacturing,PayPal,Basic,Annual,Low Risk,Promoter
+Standard,Healthcare,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Premium,E-commerce,PayPal,Basic,Annual,Low Risk,Passive
+Standard,Healthcare,PayPal,Basic,Annual,Low Risk,Passive
+Free,Education,ACH,Priority,Multi-Year,Low Risk,Passive
+Free,Healthcare,Credit Card,Priority,Monthly,Low Risk,Promoter
+Standard,E-commerce,Credit Card,Priority,Multi-Year,Low Risk,Passive
+Standard,Education,PayPal,Dedicated Manager,Monthly,High Risk,Passive
+Premium,E-commerce,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Media,PayPal,Basic,Monthly,High Risk,Promoter
+Standard,E-commerce,PayPal,Priority,Monthly,Low Risk,Promoter
+Premium,Education,Wire Transfer,Basic,Monthly,Medium Risk,Promoter
+Free,Healthcare,ACH,Basic,Annual,Low Risk,Detractor
+Free,Media,Credit Card,Basic,Monthly,Low Risk,Promoter
+Premium,FinTech,Credit Card,Basic,Monthly,Medium Risk,Passive
+Free,FinTech,Credit Card,Basic,Annual,Medium Risk,Passive
+Free,FinTech,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Standard,FinTech,ACH,Dedicated Manager,Multi-Year,Medium Risk,Passive
+Standard,Manufacturing,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Premium,FinTech,Credit Card,Priority,Annual,Medium Risk,Promoter
+Free,Education,ACH,Priority,Annual,Low Risk,Promoter
+Free,FinTech,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Free,E-commerce,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,FinTech,ACH,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Free,Healthcare,PayPal,Priority,Annual,Medium Risk,Promoter
+Standard,Education,PayPal,Dedicated Manager,Monthly,Low Risk,Promoter
+Premium,Education,Credit Card,Basic,Monthly,Low Risk,Detractor
+Enterprise,Media,Credit Card,Dedicated Manager,Annual,Low Risk,Promoter
+Free,Manufacturing,ACH,Priority,Monthly,Low Risk,Passive
+Standard,E-commerce,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Standard,Education,Credit Card,Basic,Annual,Low Risk,Passive
+Enterprise,Healthcare,ACH,Dedicated Manager,Annual,High Risk,Promoter
+Enterprise,FinTech,Wire Transfer,Dedicated Manager,Annual,Low Risk,Detractor
+Free,Education,Credit Card,Basic,Annual,Low Risk,Promoter
+Premium,Healthcare,Credit Card,Priority,Monthly,Medium Risk,Passive
+Free,FinTech,ACH,Priority,Annual,Low Risk,Promoter
+Free,Manufacturing,Credit Card,Dedicated Manager,Annual,High Risk,Promoter
+Free,Education,PayPal,Dedicated Manager,Monthly,Medium Risk,Passive
+Standard,Education,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Standard,Healthcare,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,Media,PayPal,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,E-commerce,ACH,Priority,Annual,Low Risk,Passive
+Free,Manufacturing,PayPal,Priority,Multi-Year,Medium Risk,Detractor
+Standard,E-commerce,PayPal,Priority,Annual,Low Risk,Promoter
+Free,Education,Wire Transfer,Priority,Multi-Year,Low Risk,Passive
+Free,E-commerce,ACH,Basic,Monthly,Low Risk,Promoter
+Standard,FinTech,Credit Card,Priority,Multi-Year,Low Risk,Promoter
+Free,Manufacturing,PayPal,Basic,Annual,Low Risk,Detractor
+Standard,E-commerce,PayPal,Priority,Annual,Medium Risk,Detractor
+Free,FinTech,ACH,Dedicated Manager,Multi-Year,Low Risk,Passive
+Standard,Healthcare,PayPal,Dedicated Manager,Annual,Low Risk,Promoter
+Free,E-commerce,ACH,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,Manufacturing,Credit Card,Basic,Monthly,Medium Risk,Promoter
+Premium,FinTech,ACH,Priority,Multi-Year,Low Risk,Promoter
+Free,E-commerce,Credit Card,Priority,Multi-Year,Medium Risk,Promoter
+Standard,Healthcare,ACH,Basic,Multi-Year,Low Risk,Passive
+Free,E-commerce,PayPal,Basic,Multi-Year,High Risk,Detractor
+Standard,FinTech,Credit Card,Basic,Monthly,Low Risk,Promoter
+Free,E-commerce,PayPal,Basic,Monthly,Low Risk,Promoter
+Standard,Manufacturing,Credit Card,Basic,Monthly,Low Risk,Detractor
+Standard,Education,ACH,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Enterprise,FinTech,ACH,Priority,Monthly,Low Risk,Passive
+Standard,FinTech,ACH,Basic,Annual,Low Risk,Promoter
+Standard,FinTech,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,FinTech,Wire Transfer,Basic,Multi-Year,Low Risk,Detractor
+Enterprise,E-commerce,Credit Card,Dedicated Manager,Annual,High Risk,Promoter
+Premium,Manufacturing,Wire Transfer,Basic,Multi-Year,Low Risk,Promoter
+Free,Healthcare,ACH,Priority,Annual,Medium Risk,Promoter
+Premium,Manufacturing,Wire Transfer,Basic,Multi-Year,Low Risk,Detractor
+Standard,FinTech,Wire Transfer,Basic,Multi-Year,Low Risk,Detractor
+Premium,Media,PayPal,Priority,Annual,Low Risk,Promoter
+Premium,E-commerce,Credit Card,Priority,Monthly,Low Risk,Promoter
+Free,Media,Credit Card,Basic,Annual,High Risk,Passive
+Premium,E-commerce,Credit Card,Priority,Annual,Low Risk,Promoter
+Free,FinTech,Wire Transfer,Priority,Annual,Medium Risk,Passive
+Free,E-commerce,ACH,Dedicated Manager,Annual,High Risk,Promoter
+Free,FinTech,PayPal,Priority,Annual,Low Risk,Promoter
+Premium,Manufacturing,Credit Card,Priority,Multi-Year,High Risk,Passive
+Free,Education,Wire Transfer,Basic,Multi-Year,Low Risk,Promoter
+Free,E-commerce,ACH,Basic,Monthly,High Risk,Detractor
+Premium,FinTech,PayPal,Dedicated Manager,Monthly,Medium Risk,Promoter
+Free,Media,PayPal,Basic,Annual,Low Risk,Promoter
+Free,FinTech,Credit Card,Priority,Monthly,High Risk,Detractor
+Free,Media,Credit Card,Priority,Monthly,Low Risk,Promoter
+Free,E-commerce,ACH,Priority,Annual,Low Risk,Passive
+Standard,Healthcare,Wire Transfer,Basic,Multi-Year,Low Risk,Promoter
+Free,Media,ACH,Priority,Multi-Year,Low Risk,Passive
+Enterprise,FinTech,Credit Card,Priority,Monthly,Low Risk,Passive
+Premium,E-commerce,ACH,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,FinTech,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Passive
+Free,Healthcare,PayPal,Dedicated Manager,Monthly,Low Risk,Passive
+Standard,Education,PayPal,Basic,Annual,Low Risk,Promoter
+Standard,Healthcare,PayPal,Priority,Monthly,Low Risk,Passive
+Free,Manufacturing,PayPal,Priority,Monthly,Medium Risk,Passive
+Free,E-commerce,Credit Card,Priority,Monthly,Medium Risk,Promoter
+Premium,Healthcare,Credit Card,Dedicated Manager,Annual,High Risk,Promoter
+Free,Education,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Free,FinTech,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Premium,E-commerce,Wire Transfer,Priority,Annual,High Risk,Passive
+Standard,Media,Wire Transfer,Priority,Monthly,Medium Risk,Promoter
+Free,Healthcare,ACH,Priority,Multi-Year,Low Risk,Detractor
+Standard,Education,Wire Transfer,Basic,Monthly,Low Risk,Promoter
+Free,Healthcare,PayPal,Priority,Annual,High Risk,Promoter
+Premium,Manufacturing,PayPal,Basic,Multi-Year,Medium Risk,Passive
+Standard,E-commerce,PayPal,Priority,Monthly,Low Risk,Promoter
+Premium,FinTech,ACH,Basic,Multi-Year,Medium Risk,Promoter
+Enterprise,Education,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Enterprise,Healthcare,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Enterprise,E-commerce,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Standard,Healthcare,PayPal,Priority,Annual,Low Risk,Detractor
+Free,E-commerce,PayPal,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,Manufacturing,Credit Card,Priority,Monthly,Low Risk,Detractor
+Standard,Healthcare,Wire Transfer,Basic,Multi-Year,Low Risk,Passive
+Premium,Manufacturing,Wire Transfer,Dedicated Manager,Monthly,Medium Risk,Promoter
+Free,Media,ACH,Dedicated Manager,Multi-Year,High Risk,Promoter
+Enterprise,Media,Credit Card,Priority,Multi-Year,Low Risk,Passive
+Premium,Education,ACH,Basic,Annual,Low Risk,Detractor
+Enterprise,Manufacturing,PayPal,Basic,Annual,High Risk,Promoter
+Premium,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,Education,PayPal,Basic,Annual,Medium Risk,Promoter
+Free,Healthcare,PayPal,Priority,Annual,Medium Risk,Promoter
+Free,Healthcare,Wire Transfer,Priority,Annual,Low Risk,Passive
+Free,E-commerce,Wire Transfer,Priority,Annual,Medium Risk,Detractor
+Standard,FinTech,Wire Transfer,Priority,Annual,Medium Risk,Promoter
+Premium,FinTech,Wire Transfer,Priority,Monthly,Low Risk,Passive
+Premium,Healthcare,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Passive
+Standard,E-commerce,Credit Card,Priority,Annual,Low Risk,Promoter
+Free,FinTech,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Free,Manufacturing,ACH,Dedicated Manager,Monthly,Low Risk,Passive
+Free,Healthcare,PayPal,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Free,Media,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Passive
+Standard,Manufacturing,Credit Card,Basic,Multi-Year,High Risk,Promoter
+Free,E-commerce,ACH,Basic,Annual,Low Risk,Promoter
+Free,Media,ACH,Priority,Annual,Low Risk,Promoter
+Free,Manufacturing,PayPal,Priority,Monthly,Low Risk,Passive
+Standard,FinTech,ACH,Priority,Annual,Low Risk,Passive
+Standard,FinTech,ACH,Basic,Multi-Year,Low Risk,Promoter
+Standard,Media,ACH,Priority,Multi-Year,Low Risk,Passive
+Standard,Education,ACH,Priority,Monthly,Low Risk,Passive
+Enterprise,Healthcare,Credit Card,Basic,Multi-Year,Medium Risk,Passive
+Free,Media,PayPal,Dedicated Manager,Monthly,High Risk,Detractor
+Standard,E-commerce,Wire Transfer,Basic,Monthly,Low Risk,Promoter
+Premium,Healthcare,ACH,Priority,Multi-Year,Low Risk,Detractor
+Standard,Manufacturing,Credit Card,Basic,Multi-Year,Low Risk,Promoter
+Enterprise,E-commerce,PayPal,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,E-commerce,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Standard,FinTech,PayPal,Dedicated Manager,Multi-Year,High Risk,Detractor
+Free,Manufacturing,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,FinTech,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Passive
+Free,FinTech,Credit Card,Dedicated Manager,Annual,Low Risk,Passive
+Free,Education,ACH,Priority,Monthly,High Risk,Passive
+Standard,FinTech,Credit Card,Priority,Monthly,Medium Risk,Promoter
+Standard,Healthcare,Wire Transfer,Basic,Multi-Year,Low Risk,Passive
+Free,E-commerce,ACH,Priority,Monthly,Low Risk,Promoter
+Standard,FinTech,PayPal,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,Media,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Free,Healthcare,ACH,Basic,Monthly,Medium Risk,Promoter
+Standard,Manufacturing,Credit Card,Dedicated Manager,Monthly,Medium Risk,Detractor
+Premium,E-commerce,PayPal,Priority,Annual,Medium Risk,Promoter
+Standard,Media,Credit Card,Priority,Annual,High Risk,Detractor
+Free,Media,Wire Transfer,Basic,Annual,Low Risk,Promoter
+Free,Manufacturing,Wire Transfer,Dedicated Manager,Monthly,Medium Risk,Passive
+Standard,Media,ACH,Basic,Monthly,Medium Risk,Passive
+Enterprise,Healthcare,Wire Transfer,Dedicated Manager,Annual,Low Risk,Passive
+Standard,Manufacturing,PayPal,Dedicated Manager,Annual,Medium Risk,Passive
+Free,Media,ACH,Priority,Annual,Low Risk,Passive
+Standard,Manufacturing,PayPal,Basic,Annual,Medium Risk,Detractor
+Premium,Manufacturing,Credit Card,Basic,Annual,Low Risk,Passive
+Free,FinTech,PayPal,Basic,Multi-Year,Low Risk,Promoter
+Enterprise,FinTech,PayPal,Dedicated Manager,Annual,Low Risk,Passive
+Enterprise,FinTech,Wire Transfer,Basic,Multi-Year,Low Risk,Promoter
+Free,Media,Credit Card,Dedicated Manager,Monthly,Low Risk,Promoter
+Enterprise,E-commerce,Wire Transfer,Basic,Monthly,Low Risk,Detractor
+Free,Healthcare,Credit Card,Basic,Multi-Year,Low Risk,Promoter
+Premium,Media,Credit Card,Priority,Annual,Low Risk,Passive
+Standard,FinTech,PayPal,Basic,Monthly,Medium Risk,Promoter
+Standard,Manufacturing,Wire Transfer,Priority,Annual,High Risk,Promoter
+Standard,Media,PayPal,Priority,Annual,Low Risk,Promoter
+Premium,Manufacturing,PayPal,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,Manufacturing,PayPal,Basic,Monthly,Low Risk,Passive
+Standard,Manufacturing,Credit Card,Basic,Monthly,Medium Risk,Promoter
+Free,Education,Wire Transfer,Basic,Multi-Year,Low Risk,Promoter
+Free,E-commerce,Wire Transfer,Priority,Annual,Low Risk,Promoter
+Free,Healthcare,PayPal,Basic,Annual,Low Risk,Promoter
+Standard,Healthcare,Credit Card,Dedicated Manager,Monthly,Low Risk,Passive
+Free,FinTech,Wire Transfer,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,Education,ACH,Basic,Multi-Year,Medium Risk,Passive
+Free,Media,Wire Transfer,Priority,Annual,Low Risk,Detractor
+Free,Media,PayPal,Dedicated Manager,Annual,Low Risk,Passive
+Standard,Healthcare,ACH,Dedicated Manager,Multi-Year,Medium Risk,Passive
+Enterprise,E-commerce,Credit Card,Priority,Monthly,Medium Risk,Promoter
+Free,Manufacturing,ACH,Dedicated Manager,Annual,Low Risk,Promoter
+Enterprise,FinTech,ACH,Priority,Multi-Year,Low Risk,Detractor
+Premium,E-commerce,PayPal,Dedicated Manager,Multi-Year,Low Risk,Passive
+Standard,Healthcare,Wire Transfer,Priority,Multi-Year,Low Risk,Passive
+Standard,Education,Credit Card,Dedicated Manager,Monthly,Low Risk,Passive
+Premium,FinTech,ACH,Basic,Annual,Low Risk,Promoter
+Free,Healthcare,PayPal,Dedicated Manager,Annual,Medium Risk,Promoter
+Standard,Media,Wire Transfer,Dedicated Manager,Annual,Low Risk,Passive
+Standard,FinTech,ACH,Basic,Monthly,High Risk,Passive
+Standard,Healthcare,PayPal,Basic,Annual,Medium Risk,Promoter
+Premium,Media,PayPal,Basic,Annual,High Risk,Detractor
+Free,Media,PayPal,Basic,Annual,Low Risk,Promoter
+Standard,Manufacturing,Credit Card,Priority,Annual,Medium Risk,Promoter
+Standard,Education,Wire Transfer,Priority,Monthly,Low Risk,Detractor
+Free,Manufacturing,ACH,Dedicated Manager,Multi-Year,Low Risk,Passive
+Free,Healthcare,Wire Transfer,Dedicated Manager,Multi-Year,Low Risk,Promoter
+Standard,E-commerce,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Premium,Manufacturing,ACH,Priority,Annual,Medium Risk,Promoter
+Standard,E-commerce,Wire Transfer,Dedicated Manager,Annual,Medium Risk,Passive
+Premium,Media,Credit Card,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,Healthcare,ACH,Priority,Annual,Low Risk,Passive
+Free,Education,ACH,Dedicated Manager,Monthly,Low Risk,Detractor
+Free,E-commerce,PayPal,Priority,Annual,Low Risk,Passive
+Free,Healthcare,Wire Transfer,Priority,Annual,Medium Risk,Promoter
+Free,E-commerce,ACH,Basic,Multi-Year,Low Risk,Passive
+Free,Manufacturing,ACH,Basic,Annual,High Risk,Promoter
+Premium,Healthcare,Credit Card,Priority,Monthly,Low Risk,Promoter
+Premium,Manufacturing,PayPal,Priority,Multi-Year,Low Risk,Promoter
+Free,FinTech,ACH,Basic,Monthly,Low Risk,Promoter
+Free,Healthcare,Credit Card,Dedicated Manager,Multi-Year,Low Risk,Detractor
+Free,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Standard,FinTech,ACH,Dedicated Manager,Multi-Year,Medium Risk,Promoter
+Free,Manufacturing,ACH,Priority,Monthly,Medium Risk,Detractor
+Free,Manufacturing,Credit Card,Basic,Monthly,Low Risk,Promoter
+Enterprise,E-commerce,Wire Transfer,Dedicated Manager,Annual,Low Risk,Passive
+Premium,FinTech,ACH,Basic,Multi-Year,Low Risk,Promoter
+Free,Media,ACH,Basic,Multi-Year,Low Risk,Promoter
+Standard,Education,Wire Transfer,Priority,Annual,Low Risk,Detractor
+Free,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Premium,Manufacturing,PayPal,Basic,Monthly,Medium Risk,Passive
+Standard,Healthcare,ACH,Priority,Multi-Year,Medium Risk,Promoter
+Free,FinTech,PayPal,Priority,Monthly,High Risk,Promoter
+Premium,Media,Wire Transfer,Priority,Multi-Year,Low Risk,Promoter
+Free,Education,Credit Card,Dedicated Manager,Multi-Year,High Risk,Promoter
+Free,Healthcare,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,FinTech,ACH,Priority,Monthly,Low Risk,Passive
+Standard,Media,PayPal,Dedicated Manager,Monthly,High Risk,Promoter
+Free,E-commerce,Credit Card,Dedicated Manager,Annual,Low Risk,Promoter
+Free,Media,ACH,Basic,Multi-Year,Low Risk,Promoter
+Free,E-commerce,Credit Card,Priority,Monthly,Medium Risk,Detractor
+Free,FinTech,Credit Card,Priority,Annual,High Risk,Detractor
+Premium,Media,ACH,Dedicated Manager,Monthly,Medium Risk,Passive
+Free,Education,Wire Transfer,Priority,Multi-Year,Low Risk,Detractor
+Free,Media,ACH,Priority,Annual,Low Risk,Promoter
+Standard,FinTech,ACH,Priority,Multi-Year,High Risk,Promoter
+Premium,Healthcare,Wire Transfer,Dedicated Manager,Monthly,Low Risk,Passive
+Premium,Healthcare,PayPal,Dedicated Manager,Monthly,Low Risk,Passive
+Standard,Media,ACH,Dedicated Manager,Monthly,Low Risk,Promoter
+Free,Media,Credit Card,Basic,Annual,Low Risk,Promoter
+Premium,E-commerce,ACH,Priority,Annual,Low Risk,Detractor
+Standard,FinTech,ACH,Basic,Annual,Low Risk,Passive
+Free,E-commerce,Credit Card,Dedicated Manager,Annual,Low Risk,Promoter
+Enterprise,Education,Wire Transfer,Basic,Monthly,Low Risk,Passive
+Free,Healthcare,PayPal,Priority,Monthly,Low Risk,Promoter
+Enterprise,Manufacturing,PayPal,Priority,Monthly,Low Risk,Promoter
+Premium,Manufacturing,Credit Card,Dedicated Manager,Annual,Medium Risk,Promoter
+Standard,FinTech,Wire Transfer,Dedicated Manager,Annual,Low Risk,Promoter
+Enterprise,FinTech,ACH,Basic,Monthly,Low Risk,Promoter
+Premium,Manufacturing,ACH,Dedicated Manager,Monthly,High Risk,Passive
+Free,FinTech,ACH,Basic,Annual,Low Risk,Promoter
+Standard,Healthcare,ACH,Priority,Multi-Year,Low Risk,Passive
+Free,Education,ACH,Priority,Monthly,Low Risk,Promoter
+Free,Education,Credit Card,Priority,Monthly,Medium Risk,Promoter
+Premium,E-commerce,ACH,Priority,Monthly,High Risk,Detractor
+Free,Healthcare,ACH,Priority,Annual,High Risk,Passive
+Free,FinTech,Wire Transfer,Basic,Monthly,Medium Risk,Detractor
+Standard,FinTech,ACH,Priority,Monthly,Low Risk,Detractor
+Premium,E-commerce,PayPal,Basic,Monthly,Low Risk,Promoter
+Free,E-commerce,Credit Card,Priority,Monthly,Low Risk,Promoter
+Free,FinTech,Credit Card,Basic,Monthly,Low Risk,Detractor
+Free,FinTech,Credit Card,Basic,Multi-Year,Medium Risk,Detractor
+Standard,Healthcare,PayPal,Basic,Multi-Year,Low Risk,Passive
+Free,E-commerce,ACH,Dedicated Manager,Monthly,Low Risk,Passive
+Standard,Healthcare,Credit Card,Basic,Monthly,Medium Risk,Passive
+Free,Media,PayPal,Basic,Monthly,Low Risk,Promoter
+Free,FinTech,Wire Transfer,Priority,Monthly,Low Risk,Passive
+Enterprise,Manufacturing,ACH,Basic,Annual,Low Risk,Passive

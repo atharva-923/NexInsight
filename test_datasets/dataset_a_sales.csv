@@ -1,0 +1,501 @@
+Transaction_Date,Region,Product,Units_Sold,Unit_Price,Marketing_Spend,Customer_Rating,Total_Revenue
+2025-04-13,Latin America,Security Shield,59,334.54,1769.48,3,19737.86
+2025-02-21,Europe,AI Assistant,39,506.51,107.72,1,19753.89
+2025-04-03,Europe,Enterprise Suite,18,87.42,1587.01,4,1573.56
+2025-01-15,Asia Pacific,Security Shield,59,183.51,953.18,4,10827.09
+2025-04-17,Europe,Enterprise Suite,17,937.97,2006.07,3,15945.49
+2025-03-13,Asia Pacific,Enterprise Suite,14,918.61,323.18,5,12860.54
+2025-03-02,Asia Pacific,AI Assistant,31,54.45,1511.69,2,1687.95
+2025-01-21,Asia Pacific,Security Shield,24,906.63,1254.33,5,21759.12
+2025-04-13,North America,Security Shield,60,625.21,1641.58,3,37512.6
+2025-03-24,North America,Enterprise Suite,45,831.13,255.65,5,37400.85
+2025-03-28,North America,Cloud Storage,3,459.27,1491.96,4,1377.81
+2025-03-16,Europe,AI Assistant,37,514.04,1447.56,5,19019.48
+2025-03-16,North America,AI Assistant,43,489.96,1445.58,5,185000.0
+2025-03-29,Europe,AI Assistant,40,650.18,1548.37,3,26007.2
+2025-04-27,Europe,AI Assistant,55,175.69,1723.52,5,9662.95
+2025-04-10,North America,Security Shield,39,76.98,2031.97,3,3002.22
+2025-04-14,Europe,Security Shield,15,327.14,747.57,3,4907.1
+2025-01-24,North America,Cloud Storage,4,684.21,2080.12,3,2736.84
+2025-01-03,North America,AI Assistant,25,231.67,1295.81,4,5791.75
+2025-01-22,Asia Pacific,AI Assistant,13,656.09,284.94,3,8529.17
+2025-02-22,North America,Enterprise Suite,33,922.92,240.52,4,30456.36
+2025-01-02,North America,Security Shield,16,134.51,902.17,4,2152.16
+2025-03-29,Europe,AI Assistant,42,655.34,1983.75,4,27524.28
+2025-04-18,Asia Pacific,Cloud Storage,66,449.38,1798.43,5,29659.08
+2025-01-30,North America,Cloud Storage,55,831.33,1992.68,4,45723.15
+2025-02-07,Europe,Security Shield,42,209.43,1341.45,3,8796.06
+2025-01-02,North America,Cloud Storage,34,673.36,1156.48,3,22894.24
+2025-03-05,North America,Cloud Storage,30,804.3,453.89,3,24129.0
+2025-03-01,Europe,Security Shield,13,900.15,887.66,2,11701.95
+2025-01-21,Europe,AI Assistant,13,664.92,1141.65,3,8643.96
+2025-02-02,Europe,AI Assistant,18,497.46,312.64,3,8954.28
+2025-03-17,Asia Pacific,Cloud Storage,32,606.06,629.47,5,19393.92
+2025-02-27,Latin America,Cloud Storage,39,832.01,1535.74,4,32448.39
+2025-01-22,Europe,AI Assistant,46,563.55,1865.59,3,25923.3
+2025-04-18,North America,Security Shield,29,77.35,2496.03,4,2243.15
+2025-03-30,Asia Pacific,Cloud Storage,62,887.85,2339.47,2,55046.7
+2025-02-18,North America,Enterprise Suite,62,670.57,1642.16,4,41575.34
+2025-04-01,Europe,Security Shield,57,658.86,1111.0,4,37555.02
+2025-02-28,North America,Cloud Storage,16,244.11,1626.83,4,3905.76
+2025-02-11,North America,Cloud Storage,56,643.0,1985.56,4,36008.0
+2025-04-02,Latin America,Enterprise Suite,10,404.48,384.01,5,4044.8
+2025-03-01,Asia Pacific,Enterprise Suite,30,636.11,1083.77,5,19083.3
+2025-03-21,Europe,AI Assistant,25,145.93,2115.53,4,3648.25
+2025-01-15,Europe,Security Shield,5,642.06,1021.2,4,3210.3
+2025-03-03,North America,Security Shield,65,949.47,1472.49,4,61715.55
+2025-03-03,North America,AI Assistant,450,93.39,1510.65,3,4576.11
+2025-02-16,North America,Security Shield,3,929.46,542.74,3,2788.38
+2025-03-03,Europe,Security Shield,45,416.22,969.37,1,18729.9
+2025-02-20,Asia Pacific,Security Shield,14,833.68,902.83,4,11671.52
+2025-04-18,Europe,Security Shield,30,754.15,162.87,4,22624.5
+2025-02-24,North America,Security Shield,68,560.31,158.06,3,38101.08
+2025-04-26,Latin America,Enterprise Suite,18,714.6,2096.07,5,12862.8
+2025-03-05,Asia Pacific,Security Shield,62,840.66,755.37,5,52120.92
+2025-01-03,Europe,Enterprise Suite,37,413.73,1343.39,4,15308.01
+2025-04-11,Europe,Security Shield,25,344.33,816.94,4,8608.25
+2025-02-20,Europe,AI Assistant,48,650.83,2357.63,5,31239.84
+2025-01-07,North America,Cloud Storage,65,777.06,722.31,2,50508.9
+2025-01-21,North America,Enterprise Suite,53,736.06,1131.18,4,39011.18
+2025-03-14,Asia Pacific,Security Shield,79,768.03,2194.55,2,60674.37
+2025-02-08,North America,AI Assistant,73,442.02,2120.64,4,32267.46
+2025-01-18,North America,Cloud Storage,15,786.05,546.64,3,11790.75
+2025-01-04,North America,Enterprise Suite,49,158.19,2026.34,5,7751.31
+2025-03-30,North America,Cloud Storage,68,540.04,1199.65,5,36722.72
+2025-03-01,Asia Pacific,AI Assistant,12,55.18,1259.13,2,662.16
+2025-01-14,Asia Pacific,Enterprise Suite,59,342.13,420.35,4,20185.67
+2025-04-24,Europe,Cloud Storage,37,379.82,293.44,5,14053.34
+2025-01-09,North America,Security Shield,61,406.56,1847.05,4,24800.16
+2025-03-31,Europe,Enterprise Suite,43,675.92,1291.51,5,29064.56
+2025-02-22,Europe,Cloud Storage,70,399.7,1148.44,4,27979.0
+2025-01-02,North America,AI Assistant,39,453.82,1850.82,3,17698.98
+2025-03-25,Europe,AI Assistant,56,263.79,1937.23,3,14772.24
+2025-04-02,North America,Enterprise Suite,63,385.93,481.38,3,24313.59
+2025-04-21,Europe,Cloud Storage,46,254.54,1564.54,4,11708.84
+2025-03-01,Europe,Enterprise Suite,11,115.88,424.85,3,1274.68
+2025-03-12,North America,Enterprise Suite,62,593.1,1903.3,4,36772.2
+2025-02-13,North America,Cloud Storage,77,651.39,1676.69,4,50157.03
+2025-01-08,Europe,Cloud Storage,25,607.54,2395.88,4,15188.5
+2025-02-16,Europe,Security Shield,71,467.14,265.5,5,33166.94
+2025-02-04,Asia Pacific,Cloud Storage,52,391.81,236.93,5,20374.12
+2025-03-19,Europe,AI Assistant,4,827.0,777.25,4,3308.0
+2025-03-22,North America,Enterprise Suite,59,517.17,728.09,5,30513.03
+2025-02-05,North America,Enterprise Suite,72,481.26,692.75,4,34650.72
+2025-02-19,Europe,AI Assistant,20,73.08,2275.01,4,1461.6
+2025-04-14,North America,Cloud Storage,63,357.12,698.91,5,22498.56
+2025-01-04,Europe,AI Assistant,54,392.18,752.68,3,21177.72
+2025-01-02,Latin America,AI Assistant,74,408.94,1922.56,2,30261.56
+2025-01-06,Europe,Security Shield,57,572.16,1179.38,5,32613.12
+2025-02-23,North America,AI Assistant,41,530.24,1964.11,4,21739.84
+2025-04-16,Europe,Enterprise Suite,3,597.11,256.88,5,1791.33
+2025-01-04,Europe,AI Assistant,6,738.39,1270.17,5,4430.34
+2025-02-23,Europe,Enterprise Suite,5,781.69,180.67,2,3908.45
+2025-04-03,Latin America,Enterprise Suite,5,696.31,250.37,5,3481.55
+2025-03-04,North America,Enterprise Suite,54,909.97,2275.45,4,49138.38
+2025-01-18,Latin America,Cloud Storage,47,66.41,434.19,4,3121.27
+2025-03-31,Latin America,Security Shield,49,226.2,1377.81,4,11083.8
+2025-02-13,North America,Enterprise Suite,9,56.81,1086.63,5,511.29
+2025-02-03,North America,Enterprise Suite,20,632.73,933.62,1,12654.6
+2025-03-15,North America,Cloud Storage,61,858.23,2259.6,4,52352.03
+2025-03-03,North America,Enterprise Suite,35,269.13,152.38,4,9419.55
+2025-04-10,North America,AI Assistant,50,884.33,1693.1,4,44216.5
+2025-01-14,Europe,AI Assistant,62,104.24,2412.15,4,6462.88
+2025-04-05,North America,Security Shield,17,890.99,1444.4,2,15146.83
+2025-02-17,North America,Enterprise Suite,3,366.46,2348.37,3,1099.38
+2025-01-15,Asia Pacific,Cloud Storage,32,141.28,225.42,3,4520.96
+2025-03-13,North America,AI Assistant,13,487.28,1105.1,5,6334.64
+2025-03-19,Asia Pacific,Cloud Storage,73,281.1,724.38,3,20520.3
+2025-03-28,North America,Cloud Storage,68,306.39,1853.97,3,20834.52
+2025-03-03,North America,AI Assistant,14,326.56,2455.11,5,4571.84
+2025-02-09,Europe,Cloud Storage,11,772.72,715.67,1,8499.92
+2025-03-26,Europe,AI Assistant,56,535.25,1670.02,5,29974.0
+2025-03-21,Asia Pacific,Cloud Storage,67,330.18,575.43,4,22122.06
+2025-04-19,Asia Pacific,AI Assistant,29,599.3,1456.79,5,17379.7
+2025-03-23,Asia Pacific,Enterprise Suite,9,694.54,1213.44,3,6250.86
+2025-04-21,North America,Security Shield,67,295.36,2432.81,1,19789.12
+2025-02-22,North America,AI Assistant,25,422.19,1560.47,4,10554.75
+2025-01-24,Asia Pacific,AI Assistant,76,159.7,938.82,5,12137.2
+2025-01-26,Asia Pacific,Security Shield,42,213.03,373.83,4,8947.26
+2025-03-30,Latin America,AI Assistant,9,663.01,462.99,2,5967.09
+2025-03-01,Europe,AI Assistant,79,213.29,640.76,4,16849.91
+2025-04-19,North America,Cloud Storage,40,522.65,702.32,4,20906.0
+2025-02-10,Asia Pacific,Security Shield,25,688.14,2141.48,4,17203.5
+2025-01-29,North America,Enterprise Suite,5,146.19,1446.93,4,730.95
+2025-01-15,Latin America,AI Assistant,11,560.58,1356.14,5,6166.38
+2025-02-14,Asia Pacific,Security Shield,59,280.91,375.45,4,16573.69
+2025-03-06,Europe,Cloud Storage,79,916.63,2164.34,2,72413.77
+2025-03-30,Asia Pacific,Enterprise Suite,38,485.19,1834.75,4,18437.22
+2025-03-12,Asia Pacific,Security Shield,72,775.39,262.4,2,55828.08
+2025-01-09,North America,Enterprise Suite,5,545.2,1798.8,4,2726.0
+2025-03-29,Latin America,Enterprise Suite,48,89.07,1404.49,4,4275.36
+2025-01-01,Europe,Enterprise Suite,18,619.84,296.14,2,11157.12
+2025-04-18,Asia Pacific,AI Assistant,70,906.26,1199.92,3,63438.2
+2025-01-08,North America,AI Assistant,37,591.45,1263.27,2,21883.65
+2025-03-29,Asia Pacific,Cloud Storage,60,787.27,497.86,5,47236.2
+2025-03-04,North America,Cloud Storage,48,845.79,2369.68,5,40597.92
+2025-01-11,North America,Security Shield,77,255.27,2139.94,2,19655.79
+2025-04-25,Latin America,Cloud Storage,28,240.84,1705.65,5,6743.52
+2025-03-22,North America,Enterprise Suite,69,599.88,1209.51,4,41391.72
+2025-01-08,North America,Enterprise Suite,77,419.93,1088.24,3,32334.61
+2025-02-04,Latin America,AI Assistant,40,805.88,1662.34,2,32235.2
+2025-02-04,Latin America,Enterprise Suite,45,860.02,1409.04,4,38700.9
+2025-02-02,Europe,Security Shield,62,368.08,249.46,4,22820.96
+2025-01-05,Europe,Enterprise Suite,58,263.18,1330.01,4,15264.44
+2025-04-16,Europe,Enterprise Suite,67,752.47,2035.37,2,50415.49
+2025-04-13,North America,Security Shield,56,297.33,1202.18,2,16650.48
+2025-02-10,North America,Cloud Storage,40,790.35,224.7,4,31614.0
+2025-01-28,Europe,Cloud Storage,40,431.36,1987.07,3,17254.4
+2025-01-07,Asia Pacific,Security Shield,77,650.79,583.27,3,50110.83
+2025-03-14,Asia Pacific,AI Assistant,33,135.98,720.69,3,4487.34
+2025-03-13,Asia Pacific,Enterprise Suite,6,611.47,495.3,5,3668.82
+2025-01-12,North America,Security Shield,19,456.59,892.52,5,8675.21
+2025-02-03,Europe,Enterprise Suite,40,577.95,1916.2,4,23118.0
+2025-02-02,North America,AI Assistant,59,201.21,1346.53,5,11871.39
+2025-02-17,Europe,Enterprise Suite,59,713.19,591.72,3,42078.21
+2025-04-29,Europe,Security Shield,48,826.52,2206.79,4,39672.96
+2025-01-23,Asia Pacific,Enterprise Suite,41,245.07,2211.0,3,10047.87
+2025-03-03,North America,Cloud Storage,13,136.14,2189.39,4,1769.82
+2025-03-29,North America,AI Assistant,45,71.27,673.11,5,3207.15
+2025-02-06,North America,AI Assistant,53,627.77,1182.97,4,33271.81
+2025-04-09,Asia Pacific,AI Assistant,42,596.38,2463.98,3,25047.96
+2025-02-13,Europe,Security Shield,63,542.03,1952.83,4,34147.89
+2025-04-14,North America,AI Assistant,27,258.75,165.2,2,6986.25
+2025-03-27,North America,Cloud Storage,38,401.82,256.49,5,15269.16
+2025-04-01,Asia Pacific,Security Shield,60,585.03,1213.44,4,35101.8
+2025-02-04,North America,Cloud Storage,7,497.09,2282.13,4,3479.63
+2025-03-06,Asia Pacific,Enterprise Suite,5,939.01,1392.88,4,4695.05
+2025-04-09,Asia Pacific,Enterprise Suite,45,172.8,1294.75,4,7776.0
+2025-04-11,North America,Enterprise Suite,58,675.63,353.14,2,39186.54
+2025-02-16,North America,Enterprise Suite,31,413.89,1676.27,4,12830.59
+2025-03-19,Latin America,Cloud Storage,23,435.38,2073.05,3,10013.74
+2025-01-03,North America,Security Shield,42,695.84,1013.01,4,29225.28
+2025-01-01,North America,Security Shield,10,673.19,1961.47,5,6731.9
+2025-01-05,Asia Pacific,AI Assistant,32,942.13,2414.74,5,30148.16
+2025-03-31,Latin America,Cloud Storage,53,165.55,589.04,4,8774.15
+2025-04-29,Latin America,Enterprise Suite,30,143.7,1355.99,4,4311.0
+2025-01-14,Asia Pacific,Cloud Storage,39,701.9,789.13,2,27374.1
+2025-04-13,North America,AI Assistant,31,570.55,2002.85,4,17687.05
+2025-01-27,North America,AI Assistant,2,296.74,1486.22,3,593.48
+2025-01-09,Asia Pacific,Cloud Storage,78,121.48,1623.0,4,9475.44
+2025-03-20,Europe,Cloud Storage,77,127.09,2014.99,3,9785.93
+2025-01-15,Europe,Cloud Storage,12,854.77,1050.33,2,10257.24
+2025-03-31,Latin America,Security Shield,39,222.68,2296.22,4,8684.52
+2025-02-11,North America,Enterprise Suite,66,341.03,1379.27,2,22507.98
+2025-03-18,Europe,Cloud Storage,13,253.99,479.09,4,3301.87
+2025-02-20,North America,Cloud Storage,46,369.5,1770.16,3,16997.0
+2025-03-04,Europe,Cloud Storage,27,112.48,2003.83,1,3036.96
+2025-04-06,North America,AI Assistant,17,517.15,860.23,4,8791.55
+2025-04-13,North America,AI Assistant,60,110.85,2157.23,1,6651.0
+2025-04-23,North America,Security Shield,64,770.32,2274.74,3,49300.48
+2025-02-21,Europe,Enterprise Suite,35,260.34,764.57,4,9111.9
+2025-04-06,Asia Pacific,Security Shield,70,536.01,2460.45,2,37520.7
+2025-01-04,Europe,Enterprise Suite,30,842.07,437.71,5,25262.1
+2025-04-04,Latin America,AI Assistant,71,635.79,584.84,1,45141.09
+2025-04-11,North America,AI Assistant,74,529.66,542.14,3,39194.84
+2025-01-23,North America,AI Assistant,63,341.9,2245.58,4,21539.7
+2025-04-13,Asia Pacific,Security Shield,28,349.7,1670.3,3,9791.6
+2025-04-19,North America,Cloud Storage,60,652.54,465.05,2,39152.4
+2025-01-15,Latin America,Cloud Storage,79,944.73,1156.78,3,74633.67
+2025-02-12,North America,AI Assistant,37,645.66,1576.72,3,23889.42
+2025-01-29,Latin America,Cloud Storage,22,552.01,300.31,5,12144.22
+2025-02-05,North America,Cloud Storage,68,707.59,2217.8,3,48116.12
+2025-01-13,Asia Pacific,Security Shield,20,468.69,2028.65,4,9373.8
+2025-02-01,Europe,Enterprise Suite,68,104.13,1312.5,5,7080.84
+2025-03-12,Latin America,AI Assistant,64,556.07,2421.1,4,35588.48
+2025-02-28,North America,AI Assistant,17,911.86,1102.63,5,15501.62
+2025-04-25,Europe,Security Shield,12,207.77,2461.86,3,2493.24
+2025-03-27,Latin America,Security Shield,22,671.0,1703.01,5,14762.0
+2025-01-28,Europe,Cloud Storage,17,230.84,1623.21,2,3924.28
+2025-03-07,Europe,AI Assistant,10,532.24,498.29,4,5322.4
+2025-02-11,Europe,Enterprise Suite,65,137.01,2216.63,4,8905.65
+2025-02-14,Europe,Security Shield,22,455.33,1125.98,3,10017.26
+2025-03-03,Europe,Enterprise Suite,50,730.55,489.36,4,36527.5
+2025-02-26,Europe,Enterprise Suite,14,362.81,130.26,4,5079.34
+2025-04-27,Latin America,AI Assistant,64,648.42,1443.41,1,41498.88
+2025-01-06,North America,AI Assistant,47,765.9,1365.76,3,35997.3
+2025-01-28,North America,Security Shield,29,884.46,1826.45,4,25649.34
+2025-01-28,Latin America,AI Assistant,76,261.18,2236.62,4,19849.68
+2025-04-18,Asia Pacific,AI Assistant,36,409.38,290.58,5,14737.68
+2025-02-13,Europe,AI Assistant,52,187.17,1855.59,4,9732.84
+2025-03-25,Europe,Enterprise Suite,76,943.24,549.79,5,71686.24
+2025-01-30,North America,Security Shield,7,884.3,2159.62,4,6190.1
+2025-03-03,North America,Cloud Storage,29,535.96,2065.75,3,15542.84
+2025-03-16,Europe,Enterprise Suite,11,807.83,1397.91,2,8886.13
+2025-04-29,North America,AI Assistant,33,518.86,1804.58,4,17122.38
+2025-04-02,Europe,Enterprise Suite,6,611.23,854.44,4,3667.38
+2025-03-30,North America,AI Assistant,79,130.21,1230.8,1,10286.59
+2025-04-13,Latin America,AI Assistant,32,729.74,2071.93,3,23351.68
+2025-03-03,Latin America,Enterprise Suite,51,164.94,1202.24,5,8411.94
+2025-04-07,Europe,Security Shield,75,793.46,958.72,4,59509.5
+2025-01-01,Europe,AI Assistant,58,753.83,1286.11,4,43722.14
+2025-01-27,North America,Security Shield,26,687.87,2087.8,4,17884.62
+2025-03-03,Asia Pacific,Cloud Storage,46,82.54,904.5,3,3796.84
+2025-04-26,Europe,AI Assistant,29,322.82,517.03,3,9361.78
+2025-03-18,North America,Security Shield,4,286.8,1808.83,3,1147.2
+2025-04-15,Latin America,Security Shield,13,374.12,2082.35,2,4863.56
+2025-01-03,Asia Pacific,Cloud Storage,39,128.88,341.53,4,5026.32
+2025-04-13,Latin America,Security Shield,15,893.26,675.7,4,13398.9
+2025-03-11,Asia Pacific,Security Shield,29,548.42,440.73,5,15904.18
+2025-03-13,Europe,Cloud Storage,29,324.97,935.06,5,9424.13
+2025-01-27,Europe,AI Assistant,75,407.28,1180.84,3,30546.0
+2025-01-09,Latin America,Security Shield,32,452.48,1897.18,4,14479.36
+2025-03-03,Asia Pacific,Security Shield,2,590.53,1662.75,4,1181.06
+2025-02-06,North America,Security Shield,47,514.11,1590.23,5,24163.17
+2025-04-07,North America,Enterprise Suite,78,877.45,945.7,3,68441.1
+2025-02-20,North America,Cloud Storage,22,497.27,2119.47,4,10939.94
+2025-04-16,Asia Pacific,Enterprise Suite,75,942.94,1231.09,4,70720.5
+2025-02-13,Latin America,Cloud Storage,27,816.28,2449.85,3,22039.56
+2025-01-24,North America,AI Assistant,67,237.66,1621.94,2,15923.22
+2025-03-20,Europe,AI Assistant,56,887.54,403.04,4,49702.24
+2025-02-28,North America,Security Shield,21,154.73,1722.83,4,3249.33
+2025-04-28,Latin America,Cloud Storage,47,785.7,880.25,3,36927.9
+2025-02-01,Asia Pacific,AI Assistant,59,392.56,1747.19,4,23161.04
+2025-04-06,Asia Pacific,Cloud Storage,6,840.18,267.14,3,5041.08
+2025-03-29,Europe,AI Assistant,19,831.25,519.72,4,15793.75
+2025-04-15,Europe,Enterprise Suite,57,775.33,2153.77,3,44193.81
+2025-02-21,North America,AI Assistant,69,761.03,645.23,5,52511.07
+2025-04-23,North America,Enterprise Suite,3,324.21,2108.9,3,972.63
+2025-03-03,Asia Pacific,AI Assistant,1,122.83,770.26,3,122.83
+2025-04-23,Asia Pacific,Security Shield,58,412.68,1642.92,2,23935.44
+2025-02-27,Latin America,Enterprise Suite,38,206.17,1765.96,2,7834.46
+2025-02-21,Latin America,AI Assistant,15,675.46,1330.37,4,10131.9
+2025-01-12,Europe,Security Shield,34,361.49,832.75,3,12290.66
+2025-02-08,Asia Pacific,Enterprise Suite,61,928.05,610.35,5,56611.05
+2025-01-02,Latin America,Security Shield,35,626.87,179.65,1,21940.45
+2025-01-03,Asia Pacific,Cloud Storage,64,790.23,829.47,3,50574.72
+2025-04-23,North America,Cloud Storage,25,169.27,1667.59,3,4231.75
+2025-04-11,Europe,Enterprise Suite,24,825.81,2351.93,1,19819.44
+2025-04-23,North America,AI Assistant,12,880.48,2190.89,2,10565.76
+2025-02-25,Latin America,Enterprise Suite,18,488.36,1938.56,4,8790.48
+2025-03-22,Europe,Security Shield,15,595.63,1992.27,4,8934.45
+2025-02-28,North America,AI Assistant,27,738.33,1695.96,4,19934.91
+2025-04-23,Europe,Cloud Storage,72,207.35,724.69,4,14929.2
+2025-01-02,Europe,AI Assistant,60,502.31,2277.27,4,30138.6
+2025-01-02,North America,Cloud Storage,46,408.8,1709.76,1,18804.8
+2025-04-02,North America,AI Assistant,17,181.74,1445.06,4,3089.58
+2025-02-23,Europe,AI Assistant,53,380.78,366.37,5,20181.34
+2025-03-28,Europe,AI Assistant,8,111.36,1172.93,4,890.88
+2025-04-11,Asia Pacific,Security Shield,79,73.23,1204.86,4,5785.17
+2025-04-06,Europe,Security Shield,27,171.65,2174.95,3,4634.55
+2025-04-07,Asia Pacific,Enterprise Suite,46,916.8,1411.96,4,42172.8
+2025-01-01,Europe,Enterprise Suite,50,544.58,1012.96,4,27229.0
+2025-01-19,Europe,Cloud Storage,71,919.24,2444.32,4,65266.04
+2025-01-02,Asia Pacific,Security Shield,3,439.25,365.73,5,1317.75
+2025-02-22,Europe,Cloud Storage,64,330.63,1114.12,2,21160.32
+2025-02-13,North America,Enterprise Suite,44,505.53,200.86,1,22243.32
+2025-03-31,North America,Cloud Storage,53,445.56,1875.77,4,23614.68
+2025-02-01,Asia Pacific,Enterprise Suite,24,145.1,2303.38,5,3482.4
+2025-03-11,Europe,Security Shield,60,626.74,772.09,2,37604.4
+2025-02-01,Asia Pacific,AI Assistant,3,244.43,2160.02,3,733.29
+2025-04-29,North America,Security Shield,20,607.63,801.32,1,12152.6
+2025-03-09,North America,Cloud Storage,46,635.18,2285.85,3,29218.28
+2025-02-24,North America,Cloud Storage,15,186.82,1909.51,4,2802.3
+2025-03-16,North America,Security Shield,25,105.21,2031.78,4,2630.25
+2025-02-25,Europe,Security Shield,78,752.69,143.22,3,58709.82
+2025-01-17,North America,Enterprise Suite,71,463.82,2410.74,3,32931.22
+2025-02-07,Europe,Cloud Storage,17,102.35,1844.01,1,1739.95
+2025-01-24,Latin America,Cloud Storage,9,945.38,831.4,3,8508.42
+2025-03-10,North America,Security Shield,38,102.0,2090.55,4,3876.0
+2025-04-26,Europe,AI Assistant,48,675.53,775.65,5,32425.44
+2025-04-08,Asia Pacific,Cloud Storage,60,935.31,2194.61,5,56118.6
+2025-03-11,North America,AI Assistant,63,265.26,370.19,1,16711.38
+2025-03-27,Europe,Security Shield,2,178.02,1788.85,5,356.04
+2025-01-11,Asia Pacific,Security Shield,72,159.25,1397.68,4,11466.0
+2025-04-22,Latin America,Enterprise Suite,11,322.95,331.68,4,3552.45
+2025-01-16,North America,Cloud Storage,64,140.94,680.55,4,9020.16
+2025-04-07,Latin America,AI Assistant,77,672.95,129.77,3,51817.15
+2025-03-14,Europe,Enterprise Suite,72,106.06,1225.04,3,7636.32
+2025-02-28,North America,Cloud Storage,21,508.48,823.04,2,10678.08
+2025-03-11,Europe,Enterprise Suite,18,947.03,1536.06,3,17046.54
+2025-03-21,Latin America,Security Shield,64,782.57,813.37,3,50084.48
+2025-04-03,Europe,Cloud Storage,38,603.7,819.81,4,22940.6
+2025-01-03,North America,Enterprise Suite,32,325.63,1883.66,4,10420.16
+2025-01-20,Europe,Enterprise Suite,11,611.51,215.54,4,6726.61
+2025-02-28,North America,AI Assistant,45,524.34,2266.95,2,23595.3
+2025-02-05,North America,Enterprise Suite,33,433.48,2145.43,5,14304.84
+2025-01-19,North America,Cloud Storage,41,167.64,1702.73,5,6873.24
+2025-03-31,North America,Cloud Storage,8,847.94,1523.73,4,6783.52
+2025-03-08,North America,AI Assistant,11,454.81,2241.53,5,5002.91
+2025-01-19,North America,Cloud Storage,51,225.16,544.79,4,11483.16
+2025-01-20,Europe,Security Shield,41,380.98,289.53,5,15620.18
+2025-04-06,North America,Cloud Storage,17,422.72,674.82,2,7186.24
+2025-03-12,North America,Cloud Storage,76,794.78,2006.99,3,60403.28
+2025-02-21,Asia Pacific,Enterprise Suite,46,710.25,183.21,3,32671.5
+2025-04-15,Europe,Enterprise Suite,32,742.37,1498.74,3,23755.84
+2025-02-02,Europe,Cloud Storage,79,59.93,2489.05,2,4734.47
+2025-02-09,North America,AI Assistant,54,424.54,2153.67,4,22925.16
+2025-02-08,North America,Enterprise Suite,20,483.21,1351.47,4,9664.2
+2025-03-23,North America,AI Assistant,33,67.27,252.74,4,2219.91
+2025-04-14,North America,Cloud Storage,74,283.83,2095.3,2,21003.42
+2025-01-01,North America,Cloud Storage,40,734.26,1537.55,5,29370.4
+2025-01-11,North America,Security Shield,32,173.4,375.84,4,5548.8
+2025-04-02,North America,Enterprise Suite,2,531.78,325.26,3,1063.56
+2025-02-26,North America,Cloud Storage,33,243.68,2283.1,4,8041.44
+2025-03-30,Europe,Security Shield,77,60.91,1706.08,3,4690.07
+2025-02-19,North America,Enterprise Suite,30,267.08,2090.29,3,8012.4
+2025-01-23,North America,Cloud Storage,33,928.29,2209.55,5,30633.57
+2025-01-31,Europe,Cloud Storage,77,771.38,1472.25,3,59396.26
+2025-04-04,Europe,Enterprise Suite,26,913.62,1341.87,4,23754.12
+2025-02-11,North America,Enterprise Suite,22,489.07,1133.03,5,10759.54
+2025-04-09,Asia Pacific,Enterprise Suite,66,148.76,860.67,4,9818.16
+2025-01-07,Europe,Cloud Storage,38,543.16,1143.03,2,20640.08
+2025-01-16,North America,Cloud Storage,46,458.94,1957.31,2,21111.24
+2025-03-31,Asia Pacific,Security Shield,15,809.92,1544.62,1,12148.8
+2025-04-22,Latin America,AI Assistant,44,138.27,2242.06,4,6083.88
+2025-04-26,North America,Enterprise Suite,49,489.42,1164.11,4,23981.58
+2025-03-01,North America,Cloud Storage,75,185.04,1557.01,2,13878.0
+2025-04-23,Asia Pacific,Cloud Storage,61,342.21,1615.14,5,20874.81
+2025-01-02,Asia Pacific,Enterprise Suite,67,713.62,1520.07,4,47812.54
+2025-01-01,North America,AI Assistant,6,478.42,1786.32,3,2870.52
+2025-02-17,North America,Enterprise Suite,9,388.3,669.84,4,3494.7
+2025-01-12,North America,AI Assistant,6,405.03,1329.67,4,2430.18
+2025-03-10,Europe,Cloud Storage,73,463.5,350.14,2,33835.5
+2025-02-06,Europe,AI Assistant,32,756.51,1022.83,3,24208.32
+2025-02-01,North America,Security Shield,41,852.88,1270.4,5,34968.08
+2025-04-29,Europe,Cloud Storage,76,909.8,1665.34,4,69144.8
+2025-01-09,Asia Pacific,Security Shield,8,758.21,2381.27,4,6065.68
+2025-04-15,North America,Enterprise Suite,72,333.87,1541.56,4,24038.64
+2025-04-09,North America,Enterprise Suite,50,669.32,1884.63,1,33466.0
+2025-01-19,Asia Pacific,Enterprise Suite,62,443.84,1315.04,3,27518.08
+2025-02-17,Asia Pacific,AI Assistant,62,279.2,1621.85,4,17310.4
+2025-03-21,Europe,Cloud Storage,7,806.78,270.24,3,5647.46
+2025-01-03,Europe,Enterprise Suite,75,84.58,710.54,1,6343.5
+2025-01-20,North America,Enterprise Suite,4,861.59,968.45,5,3446.36
+2025-01-24,Europe,Cloud Storage,6,465.33,1233.98,5,2791.98
+2025-02-23,Europe,Enterprise Suite,58,623.48,209.56,4,36161.84
+2025-04-30,North America,Security Shield,22,643.42,436.06,5,14155.24
+2025-02-02,North America,Cloud Storage,26,855.61,764.35,3,22245.86
+2025-01-24,North America,Cloud Storage,3,623.0,2431.68,5,1869.0
+2025-04-26,North America,Cloud Storage,41,602.54,895.23,3,24704.14
+2025-03-16,North America,Security Shield,60,109.99,1256.9,5,6599.4
+2025-04-23,North America,Cloud Storage,14,516.57,570.63,5,7231.98
+2025-03-13,North America,Security Shield,75,185.15,1565.87,4,13886.25
+2025-02-05,North America,Cloud Storage,12,713.69,773.64,5,8564.28
+2025-02-07,Asia Pacific,AI Assistant,12,511.0,596.78,4,6132.0
+2025-04-14,Europe,Enterprise Suite,13,662.21,1339.77,3,8608.73
+2025-03-25,Europe,AI Assistant,25,87.51,113.21,4,2187.75
+2025-04-09,Asia Pacific,Enterprise Suite,45,126.31,118.39,4,5683.95
+2025-04-22,Europe,Security Shield,19,694.69,625.77,2,13199.11
+2025-03-30,North America,AI Assistant,55,114.88,188.13,4,6318.4
+2025-04-09,Europe,Cloud Storage,45,114.13,359.26,5,5135.85
+2025-01-25,Europe,Enterprise Suite,8,60.9,913.27,3,487.2
+2025-04-03,Asia Pacific,Enterprise Suite,53,910.85,2026.21,4,48275.05
+2025-01-18,Europe,AI Assistant,55,713.76,1472.92,5,39256.8
+2025-04-20,North America,Security Shield,32,367.93,1330.4,5,11773.76
+2025-03-23,North America,AI Assistant,51,316.88,804.37,5,16160.88
+2025-03-07,North America,Security Shield,44,364.73,2336.21,4,16048.12
+2025-02-23,Europe,Security Shield,70,747.19,1052.84,5,52303.3
+2025-02-04,Europe,Enterprise Suite,18,645.23,309.02,4,11614.14
+2025-03-21,North America,AI Assistant,22,216.68,1580.96,3,4766.96
+2025-03-02,Latin America,AI Assistant,37,206.7,373.21,4,7647.9
+2025-02-10,Europe,Security Shield,56,138.56,928.54,4,7759.36
+2025-04-10,North America,AI Assistant,59,644.27,1317.79,3,38011.93
+2025-02-02,North America,Cloud Storage,3,737.94,2198.13,4,2213.82
+2025-03-09,North America,Cloud Storage,28,288.54,1284.51,4,8079.12
+2025-02-02,North America,AI Assistant,74,68.85,1785.42,3,5094.9
+2025-01-14,North America,AI Assistant,35,123.95,2482.76,4,4338.25
+2025-01-21,North America,Security Shield,61,921.07,415.57,4,56185.27
+2025-02-17,North America,Cloud Storage,54,315.9,759.36,4,17058.6
+2025-01-20,North America,Cloud Storage,63,742.3,1046.98,1,46764.9
+2025-04-30,Asia Pacific,Enterprise Suite,79,612.2,1112.39,1,48363.8
+2025-01-08,North America,Security Shield,7,393.75,1086.45,3,2756.25
+2025-01-07,Europe,Enterprise Suite,76,235.12,2278.27,5,17869.12
+2025-03-08,Europe,Cloud Storage,49,159.25,1813.68,3,7803.25
+2025-01-17,Latin America,Security Shield,31,603.51,1558.97,4,18708.81
+2025-02-02,North America,AI Assistant,58,747.17,842.49,3,43335.86
+2025-02-17,North America,Security Shield,61,629.51,2077.1,3,38400.11
+2025-03-17,Latin America,AI Assistant,24,527.27,2392.15,5,12654.48
+2025-02-28,Asia Pacific,AI Assistant,20,87.76,2070.88,4,1755.2
+2025-04-25,Asia Pacific,Security Shield,37,921.64,103.76,2,34100.68
+2025-03-27,North America,AI Assistant,4,768.84,1627.36,4,3075.36
+2025-04-29,North America,Enterprise Suite,20,313.54,222.72,1,6270.8
+2025-01-22,Europe,Cloud Storage,60,931.97,718.26,4,55918.2
+2025-04-20,Latin America,AI Assistant,24,591.69,242.86,4,14200.56
+2025-01-30,Europe,Enterprise Suite,50,574.18,1549.11,2,28709.0
+2025-02-07,Europe,AI Assistant,49,723.27,1747.82,3,35440.23
+2025-04-12,North America,Cloud Storage,51,780.59,374.77,3,39810.09
+2025-04-19,Asia Pacific,Enterprise Suite,36,640.83,1021.21,5,23069.88
+2025-02-20,North America,Cloud Storage,66,165.29,1194.97,5,10909.14
+2025-02-23,North America,Cloud Storage,79,354.44,985.73,1,28000.76
+2025-01-08,Europe,Enterprise Suite,34,885.28,390.46,4,30099.52
+2025-01-27,Europe,Enterprise Suite,36,252.15,1105.47,3,9077.4
+2025-01-27,North America,Enterprise Suite,6,384.95,1902.83,3,2309.7
+2025-04-08,North America,Security Shield,39,438.87,270.42,4,17115.93
+2025-01-21,Europe,Enterprise Suite,42,445.46,292.43,5,18709.32
+2025-01-30,North America,Enterprise Suite,58,601.65,951.45,5,34895.7
+2025-04-07,Europe,Enterprise Suite,12,898.77,2360.14,4,10785.24
+2025-01-28,North America,Enterprise Suite,3,266.62,1704.57,3,799.86
+2025-04-21,Europe,AI Assistant,18,159.35,1728.81,4,2868.3
+2025-03-05,Europe,Security Shield,40,227.72,968.61,3,9108.8
+2025-04-07,North America,Cloud Storage,21,848.23,1524.79,4,17812.83
+2025-03-10,North America,Enterprise Suite,15,631.23,124.31,3,9468.45
+2025-03-02,North America,AI Assistant,26,307.32,1626.63,4,7990.32
+2025-02-17,North America,AI Assistant,8,784.35,2291.89,3,6274.8
+2025-01-19,Latin America,AI Assistant,42,825.23,1570.18,3,34659.66
+2025-01-04,North America,Cloud Storage,44,811.86,2196.88,5,35721.84
+2025-02-04,Asia Pacific,Enterprise Suite,14,877.03,1837.54,2,12278.42
+2025-03-05,North America,Security Shield,78,277.02,389.34,4,21607.56
+2025-02-18,Europe,Security Shield,2,729.54,2265.89,3,1459.08
+2025-01-17,Asia Pacific,AI Assistant,37,464.49,259.47,1,17186.13
+2025-02-13,Europe,Cloud Storage,69,807.8,1381.52,1,55738.2
+2025-04-02,Europe,Cloud Storage,38,705.64,441.13,3,26814.32
+2025-01-30,Europe,Cloud Storage,41,748.8,128.1,5,30700.8
+2025-04-03,North America,Security Shield,62,640.55,1112.88,3,39714.1
+2025-02-15,Latin America,AI Assistant,60,209.69,808.1,5,12581.4
+2025-04-27,Asia Pacific,Enterprise Suite,14,540.52,1266.4,4,7567.28
+2025-01-06,Latin America,Security Shield,2,936.2,1485.28,4,1872.4
+2025-04-09,North America,AI Assistant,70,893.65,204.97,4,62555.5
+2025-04-15,Asia Pacific,AI Assistant,17,88.86,395.21,4,1510.62
+2025-02-06,Latin America,Enterprise Suite,28,198.33,1440.74,4,5553.24
+2025-01-24,North America,Enterprise Suite,66,168.56,923.6,3,11124.96
+2025-04-03,North America,Enterprise Suite,35,703.38,1850.02,3,24618.3
+2025-04-23,Asia Pacific,Cloud Storage,5,786.01,1665.5,5,3930.05
+2025-02-15,Europe,Enterprise Suite,65,242.16,2129.45,5,15740.4
+2025-02-22,Asia Pacific,AI Assistant,40,505.27,1761.98,5,20210.8
+2025-04-05,North America,Enterprise Suite,76,806.63,1131.83,4,61303.88
+2025-04-09,Asia Pacific,AI Assistant,56,709.52,1715.12,4,39733.12
+2025-03-01,North America,Security Shield,36,538.01,760.91,4,19368.36
+2025-04-07,North America,Cloud Storage,45,581.31,835.15,4,26158.95
+2025-04-26,North America,Security Shield,23,507.52,1993.56,3,11672.96
+2025-03-04,Asia Pacific,Security Shield,47,317.79,1171.41,4,14936.13
+2025-03-26,Europe,AI Assistant,31,558.52,2016.11,3,17314.12
+2025-02-01,Europe,Security Shield,11,670.0,2073.81,3,7370.0
+2025-03-28,North America,AI Assistant,10,835.99,2158.15,5,8359.9
+2025-02-02,Asia Pacific,Enterprise Suite,67,622.66,2299.92,3,41718.22
+2025-03-08,North America,Enterprise Suite,14,735.01,1134.36,2,10290.14
+2025-01-18,Asia Pacific,AI Assistant,74,194.06,865.28,2,14360.44
+2025-01-25,Europe,Enterprise Suite,10,465.4,1497.28,5,4654.0
+2025-04-16,North America,Cloud Storage,76,58.4,990.81,4,4438.4
+2025-04-05,Europe,Security Shield,1,272.01,1542.58,4,272.01
+2025-02-23,North America,Cloud Storage,5,703.82,1793.41,5,3519.1
+2025-02-27,Asia Pacific,Security Shield,20,942.63,1752.17,5,18852.6
+2025-03-08,Europe,Enterprise Suite,8,139.26,998.93,3,1114.08
+2025-04-14,North America,Cloud Storage,43,411.34,500.46,4,17687.62
+2025-02-15,Asia Pacific,Enterprise Suite,76,770.06,1133.27,4,58524.56
+2025-01-24,North America,Security Shield,1,233.63,442.23,4,233.63
+2025-04-24,Europe,AI Assistant,57,549.58,2236.23,3,31326.06
+2025-02-01,Latin America,AI Assistant,64,709.76,930.11,5,45424.64
+2025-02-16,Europe,Cloud Storage,28,604.39,470.7,4,16922.92
+2025-03-27,North America,Enterprise Suite,37,219.22,161.07,3,8111.14
+2025-01-23,Latin America,Enterprise Suite,47,369.85,1649.97,4,17382.95
+2025-03-07,Europe,Cloud Storage,76,755.41,1628.57,1,57411.16
+2025-01-27,North America,AI Assistant,37,548.8,917.45,2,20305.6
+2025-04-16,North America,Security Shield,49,54.71,272.11,4,2680.79
+2025-01-02,Asia Pacific,Cloud Storage,44,734.89,1083.11,1,32335.16
+2025-03-31,Europe,Security Shield,56,81.78,846.92,4,4579.68
+2025-01-17,Europe,AI Assistant,28,721.16,1725.09,4,20192.48
+2025-04-14,Asia Pacific,Enterprise Suite,79,232.23,1553.87,2,18346.17
+2025-02-02,Asia Pacific,AI Assistant,6,912.27,975.02,5,5473.62
+2025-01-09,North America,Cloud Storage,61,381.15,622.94,3,23250.15
+2025-02-12,North America,Enterprise Suite,20,344.24,2471.29,3,6884.8
+2025-04-28,North America,Cloud Storage,78,184.0,1189.6,3,14352.0
+2025-02-17,Asia Pacific,Cloud Storage,2,325.04,1751.86,3,650.08
+2025-02-08,North America,AI Assistant,73,838.99,437.33,1,61246.27
+2025-04-03,Europe,Cloud Storage,37,946.7,1265.42,4,35027.9
+2025-02-11,Asia Pacific,AI Assistant,20,381.48,166.09,5,7629.6
+2025-04-29,Asia Pacific,Enterprise Suite,26,453.75,1313.09,3,11797.5
+2025-01-26,North America,AI Assistant,29,699.86,2413.64,4,20295.94
+2025-04-09,Asia Pacific,Enterprise Suite,1,847.58,1022.1,4,847.58
+2025-02-19,North America,AI Assistant,35,583.74,193.59,5,20430.9
+2025-01-25,Asia Pacific,Security Shield,70,402.37,174.29,4,28165.9
+2025-01-24,North America,Security Shield,59,421.36,1031.17,3,24860.24
