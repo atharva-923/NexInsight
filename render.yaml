@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: nexinsight
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false        # Set manually in Render dashboard — never hardcode
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+    healthCheckPath: /
