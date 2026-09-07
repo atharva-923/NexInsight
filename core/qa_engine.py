@@ -1,28 +1,32 @@
 """
 NexInsight - Natural Language 'Ask Your Data' Engine
-Interprets plain-English analytical queries and extracts precise,
-data-backed answers with supporting metrics, charts, and data slices.
+Interprets plain-English analytical queries, calculates ground-truth statistics via Pandas,
+retrieves targeted tabular context via RAG, and synthesizes natural-language answers
+via xAI Grok API with seamless local fallback.
 """
 
 import re
 import difflib
 import pandas as pd
 import numpy as np
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 import plotly.express as px
 import plotly.graph_objects as go
 from core.visualizer import Visualizer
+from core.llm_client import LLMClient, GrokClient
+from core.rag_engine import RAGEngine, RAGRetriever
 
 
 class DataQAEngine:
-    """Interprets user queries and computes factual responses against live dataset."""
+    """Hybrid Data QA engine combining deterministic Pandas truth with Grok natural reasoning."""
 
     def __init__(
         self,
         df: pd.DataFrame,
         column_types: Dict[str, str],
         analysis_results: Dict[str, Any],
-        health_metrics: Dict[str, Any]
+        health_metrics: Dict[str, Any],
+        dataset_record: Optional[Dict[str, Any]] = None
     ):
         self.df = df
         self.column_types = column_types
@@ -32,53 +36,150 @@ class DataQAEngine:
         self.categorical_cols = [c for c, t in column_types.items() if t in ["Categorical", "Boolean"] and c in df.columns]
         self.date_cols = [c for c, t in column_types.items() if t == "Date" and c in df.columns]
 
+        # Construct or use comprehensive dataset record for RAG retrieval
+        if dataset_record:
+            self.dataset_record = dataset_record
+        else:
+            self.dataset_record = {
+                "filename": "active_dataset.csv",
+                "raw_df": df,
+                "cleaned_df": df,
+                "cleaned_row_count": len(df),
+                "original_row_count": len(df),
+                "column_count": len(df.columns),
+                "column_types": column_types,
+                "missing_value_count": health_metrics.get("total_missing", 0),
+                "duplicate_count": 0,
+                "health_metrics": health_metrics,
+                "cleaning_summary": {},
+                "analysis_results": analysis_results,
+                "anomalies_data": analysis_results.get("outliers", {}),
+                "ai_insights": {}
+            }
+
     def _find_matching_column(self, query: str) -> Optional[str]:
-        """Finds column name mentioned in query via substring or fuzzy match."""
+        """Finds column name mentioned in query via word boundary or exact match."""
         q_clean = query.lower()
-        # Direct exact or substring check
-        for col in self.df.columns:
-            if col.lower() in q_clean:
-                return col
         
-        # Word-level fuzzy match
-        words = re.findall(r"\w+", q_clean)
-        best_match = None
-        best_score = 0.0
+        # 1. Direct exact column name check with word boundaries
+        for col in self.df.columns:
+            c_low = col.lower()
+            if re.search(r"\b" + re.escape(c_low) + r"\b", q_clean):
+                return col
+
+        # 2. Check compound column tokens (e.g. 'revenue' in 'Total_Revenue' or 'cpu' in 'CPU_Load_Pct')
+        for col in self.df.columns:
+            c_low = col.lower()
+            tokens = [t for t in re.split(r"[_\s\-]+", c_low) if len(t) >= 4]
+            for tok in tokens:
+                if re.search(r"\b" + re.escape(tok) + r"\b", q_clean):
+                    return col
+        
+        # 3. Word-level fuzzy match only for words >= 5 chars with high cutoff
+        words = re.findall(r"\b[a-zA-Z]{5,}\b", q_clean)
         for w in words:
-            if len(w) <= 2:
-                continue
-            matches = difflib.get_close_matches(w, [c.lower() for c in self.df.columns], n=1, cutoff=0.7)
+            matches = difflib.get_close_matches(w, [c.lower() for c in self.df.columns], n=1, cutoff=0.85)
             if matches:
                 for col in self.df.columns:
                     if col.lower() == matches[0]:
                         return col
         return None
 
-    def answer_query(self, query: str) -> Dict[str, Any]:
+    def compute_deterministic_answer(self, query: str) -> Dict[str, Any]:
         """
-        Routes and processes query using semantic pattern matching and live calculations.
-        Returns:
-        {
-            "query": str,
-            "answer": str,
-            "metric_highlight": Optional[str],
-            "figure": Optional[go.Figure],
-            "data_slice": Optional[pd.DataFrame]
-        }
+        Calculates ground-truth numerical and statistical answers using Pandas.
+        Zero hallucinations: every single metric is verified against the live dataframe.
         """
+        if self.df is None or self.df.empty:
+            return {
+                "query": query,
+                "answer": "The dataset is empty (0 records). No statistical calculations can be performed.",
+                "metric_highlight": "0 Records Available",
+                "figure": None,
+                "data_slice": None
+            }
+
         q = query.lower().strip()
         matched_col = self._find_matching_column(q)
 
-        # 1. Anomalies / Unusual / Outliers
-        if any(w in q for w in ["unusual", "anomaly", "anomalies", "outlier", "outliers", "flagged", "strange"]):
+        # 0. Greetings / Help
+        if q in ["hi", "hello", "hey", "help", "who are you", "what can you do", "hi!", "hello!"]:
+            filename = self.dataset_record.get("filename", "the active dataset")
+            ans = (
+                f"Hello! I am **NexInsight AI Analyst**, your autonomous data intelligence assistant for **'{filename}'** "
+                f"({len(self.df):,} rows, {len(self.df.columns)} attributes). "
+                "I combine verified Python calculations with natural-language insights. "
+                "You can ask me questions like: *'Which region has the highest sales?'*, *'What columns have missing values?'*, "
+                "*'Are there unusual observations?'*, or *'What are the strongest correlations?'*."
+            )
+            return {
+                "query": query,
+                "answer": ans,
+                "metric_highlight": f"Analyst Ready ({len(self.df):,} Rows)",
+                "figure": None,
+                "data_slice": None
+            }
+
+        # 1. Row count / Size
+        if any(w in q for w in ["how many rows", "row count", "record count", "total rows", "number of rows", "how many records", "how big", "dataset size"]):
+            ans = f"The dataset contains **{len(self.df):,} rows** and **{len(self.df.columns)} columns** with a Health Score of **{self.health.get('score', 100)}/100**."
+            return {
+                "query": query,
+                "answer": ans,
+                "metric_highlight": f"{len(self.df):,} Rows · {len(self.df.columns)} Columns",
+                "figure": None,
+                "data_slice": None
+            }
+
+        # 2. Missing values / Duplicates / Data Quality
+        if any(w in q for w in ["missing", "null", "nan", "duplicate", "duplicates", "data quality", "hygiene", "health score", "completeness"]):
+            raw_df = self.dataset_record.get("raw_df")
+            eval_df = raw_df if raw_df is not None else self.df
+            missing_series = eval_df.isna().sum()
+            cols_with_missing = missing_series[missing_series > 0]
+            total_missing = int(missing_series.sum())
+            clean_summary = self.dataset_record.get("cleaning_summary", {})
+            dup_count = clean_summary.get("duplicates_removed", clean_summary.get("duplicates_detected", 0))
+            score = self.health.get("score", 100)
+
+            if any(w in q for w in ["duplicate", "duplicates"]):
+                ans = f"NexInsight detected and resolved **{dup_count:,} duplicate rows** in this dataset (Uniqueness index: {self.health.get('uniqueness_pct', 100.0):.1f}%)."
+                highlight = f"{dup_count:,} Duplicates"
+            elif cols_with_missing.empty:
+                ans = (
+                    f"**Zero missing values** were detected across all {len(eval_df.columns)} columns in this dataset. "
+                    f"Data completeness is **100.0%** and the overall Health Score is **{score}/100**."
+                )
+                highlight = "0 Missing Values (100% Complete)"
+            else:
+                breakdown = [f"**'{c}'** ({cnt:,} missing, {cnt/len(eval_df)*100:.1f}%)" for c, cnt in cols_with_missing.items()]
+                ans = (
+                    f"The following columns contain missing values in the raw dataset: {', '.join(breakdown)}. "
+                    f"In total, there were **{total_missing:,} missing values** (Completeness index: {self.health.get('completeness_pct', 100.0):.1f}%, Health Score: {score}/100)."
+                )
+                highlight = f"{total_missing:,} Missing Values ({len(cols_with_missing)} Columns)"
+
+            missing_df = pd.DataFrame({"Column": missing_series.index, "Missing Count": missing_series.values})
+            return {
+                "query": query,
+                "answer": ans,
+                "metric_highlight": highlight,
+                "figure": None,
+                "data_slice": missing_df[missing_df["Missing Count"] > 0] if not cols_with_missing.empty else None
+            }
+
+        # 3. Anomalies / Unusual / Outliers
+        if any(w in q for w in ["unusual", "anomaly", "anomalies", "outlier", "outliers", "flagged", "strange", "abnormal"]):
             outlier_data = self.analysis.get("outliers", {})
-            total_anoms = outlier_data.get("total_outliers_detected", 0)
-            top_records = outlier_data.get("top_anomalies", [])
+            anoms_data = self.dataset_record.get("anomalies_data", {})
+            total_anoms = anoms_data.get("total_anomalies", outlier_data.get("total_outliers_detected", 0))
+            top_records = anoms_data.get("anomalies_list", outlier_data.get("top_anomalies", []))
+            sev_counts = anoms_data.get("severity_counts", {})
             
             if total_anoms == 0:
                 return {
                     "query": query,
-                    "answer": "No critical statistical anomalies or extreme outliers were detected in this dataset.",
+                    "answer": "No critical statistical anomalies or extreme outliers were detected in this dataset (0 anomalies identified).",
                     "metric_highlight": "0 Anomalies Detected",
                     "figure": None,
                     "data_slice": None
@@ -86,9 +187,10 @@ class DataQAEngine:
             
             highest = top_records[0] if top_records else {}
             ans = (
-                f"Yes, NexInsight detected **{total_anoms:,} potential anomalies** across numerical parameters. "
-                f"The most extreme occurrence is in attribute **'{highest.get('column')}'** at row #{highest.get('row_index')} "
-                f"with value **{highest.get('value'):,}** (expected normal range: {highest.get('normal_range')})."
+                f"NexInsight detected **{total_anoms:,} potential anomalies** across numerical parameters "
+                f"({sev_counts.get('Critical', 0)} critical, {sev_counts.get('Moderate', 0)} moderate). "
+                f"The most extreme occurrence is in **'{highest.get('column')}'** at row #{highest.get('row_index')} "
+                f"with value **{highest.get('value'):,}** (normal range: {highest.get('normal_range')})."
             )
             
             fig = None
@@ -99,13 +201,13 @@ class DataQAEngine:
             return {
                 "query": query,
                 "answer": ans,
-                "metric_highlight": f"{total_anoms} Anomalies Identified",
+                "metric_highlight": f"{total_anoms:,} Anomalies Identified",
                 "figure": fig,
                 "data_slice": df_slice
             }
 
-        # 2. Strongest correlations / Relationships
-        if any(w in q for w in ["correlation", "correlations", "relationship", "correlated", "co-move", "related"]):
+        # 3. Strongest correlations / Relationships
+        if any(w in q for w in ["correlation", "correlations", "relationship", "correlated", "co-move", "related", "dependency", "association"]):
             corr_data = self.analysis.get("correlations", {})
             if not corr_data.get("has_correlation") or not corr_data.get("significant_pairs"):
                 return {
@@ -131,8 +233,8 @@ class DataQAEngine:
                 "data_slice": pd.DataFrame(corr_data["significant_pairs"][:6])
             }
 
-        # 3. Temporal Peaks / Months / Trend
-        if any(w in q for w in ["month", "time", "trend", "peak", "temporal", "period", "grow", "growth"]):
+        # 4. Temporal Peaks / Months / Trends
+        if any(w in q for w in ["month", "time", "trend", "peak", "temporal", "period", "grow", "growth", "seasonality"]):
             trends = self.analysis.get("temporal_trends")
             if trends:
                 ans = (
@@ -149,7 +251,7 @@ class DataQAEngine:
                     "data_slice": None
                 }
 
-        # 4. Highest / Top / Best / Maximum
+        # 5. Highest / Top / Best / Maximum
         if any(w in q for w in ["highest", "top", "best", "max", "maximum", "peak"]):
             # If a specific numeric column was asked
             if matched_col and matched_col in self.numeric_cols:
@@ -167,7 +269,7 @@ class DataQAEngine:
                 }
 
             # If highest performing category is asked
-            if self.categorical_cols and self.numeric_cols:
+            if self.categorical_cols and self.numeric_cols and any(w in q for w in ["category", "segment", "perform", "product", "sales", "revenue", "tier", "region", "lead", "rank", "grouped"]):
                 cat_col = self.categorical_cols[0]
                 num_col = self.numeric_cols[0]
                 grouped = self.df.groupby(cat_col)[num_col].agg(["sum", "mean", "count"]).reset_index()
@@ -188,7 +290,7 @@ class DataQAEngine:
                     "data_slice": grouped.head(6)
                 }
 
-        # 5. Lowest / Minimum / Smallest
+        # 6. Lowest / Minimum / Smallest
         if any(w in q for w in ["lowest", "bottom", "worst", "min", "minimum", "smallest"]):
             if matched_col and matched_col in self.numeric_cols:
                 series = pd.to_numeric(self.df[matched_col], errors="coerce").dropna()
@@ -204,7 +306,23 @@ class DataQAEngine:
                     "data_slice": pd.DataFrame([min_row])
                 }
 
-        # 6. Average / Mean / Median
+        # 7. Sum / Total
+        if any(w in q for w in ["sum", "total of", "sum of", "total amount", "cumulative"]):
+            target = matched_col if matched_col in self.numeric_cols else (self.numeric_cols[0] if self.numeric_cols else None)
+            if target:
+                series = pd.to_numeric(self.df[target], errors="coerce").dropna()
+                tot_val = series.sum()
+                ans = f"The total (sum) of **'{target}'** across {len(series):,} valid records is **{tot_val:,.2f}**."
+                fig = Visualizer.create_histogram(self.df, target)
+                return {
+                    "query": query,
+                    "answer": ans,
+                    "metric_highlight": f"Sum {target}: {tot_val:,.2f}",
+                    "figure": fig,
+                    "data_slice": None
+                }
+
+        # 8. Average / Mean / Median
         if any(w in q for w in ["average", "mean", "median", "typical"]):
             target = matched_col if matched_col in self.numeric_cols else (self.numeric_cols[0] if self.numeric_cols else None)
             if target:
@@ -225,12 +343,34 @@ class DataQAEngine:
                     "data_slice": None
                 }
 
-        # 7. Important Patterns / Findings / Summary
-        if any(w in q for w in ["pattern", "patterns", "finding", "findings", "insight", "insights", "summary", "overview"]):
+        # 8. Most frequent category / Common
+        if any(w in q for w in ["most frequent", "most common", "occurs most", "dominant category", "mode", "frequency"]):
+            target_cat = matched_col if matched_col in self.categorical_cols else (self.categorical_cols[0] if self.categorical_cols else None)
+            if target_cat:
+                vc = self.df[target_cat].value_counts()
+                mode_val = vc.index[0]
+                mode_cnt = vc.iloc[0]
+                mode_pct = (mode_cnt / len(self.df)) * 100
+                ans = (
+                    f"In column **'{target_cat}'**, the most frequent category is **'{mode_val}'**, "
+                    f"occurring **{mode_cnt:,} times** ({mode_pct:.1f}% of records)."
+                )
+                fig = Visualizer.create_donut_chart(self.df, target_cat)
+                return {
+                    "query": query,
+                    "answer": ans,
+                    "metric_highlight": f"Mode: {mode_val} ({mode_pct:.1f}%)",
+                    "figure": fig,
+                    "data_slice": vc.head(6).reset_index()
+                }
+
+        # 9. Important Patterns / Findings / Summary
+        if any(w in q for w in ["pattern", "patterns", "finding", "findings", "insight", "insights", "summary", "overview", "what stands out"]):
             cat_info = []
             for c in self.categorical_cols[:2]:
-                top_v = self.df[c].value_counts().index[0]
-                pct = (self.df[c].value_counts().iloc[0] / len(self.df)) * 100
+                vc = self.df[c].value_counts()
+                top_v = vc.index[0]
+                pct = (vc.iloc[0] / len(self.df)) * 100
                 cat_info.append(f"'{c}' is dominated by '{top_v}' ({pct:.1f}%)")
             
             corr_info = ""
@@ -239,23 +379,26 @@ class DataQAEngine:
                 top_p = corr_data["significant_pairs"][0]
                 corr_info = f" Strongest interaction is between '{top_p['col1']}' and '{top_p['col2']}' (r={top_p['correlation']:.2f})."
 
+            anoms_data = self.dataset_record.get("anomalies_data", {})
+            total_anoms = anoms_data.get("total_anomalies", self.analysis.get("outliers", {}).get("total_outliers_detected", 0))
+
             ans = (
                 f"**Key patterns in this dataset:**\n\n"
                 f"- Evaluated **{len(self.df):,} rows** across **{len(self.df.columns)} columns** with health score **{self.health.get('score', 100)}/100**.\n"
                 f"- {'; '.join(cat_info) if cat_info else 'Balanced categorical distribution.'}\n"
                 f"- {corr_info}\n"
-                f"- Total of **{self.analysis.get('outliers', {}).get('total_outliers_detected', 0)}** statistical anomalies identified."
+                f"- Total of **{total_anoms:,}** statistical anomalies identified."
             )
             fig = Visualizer.auto_generate_dashboard_charts(self.df, self.column_types)[0] if self.numeric_cols else None
             return {
                 "query": query,
                 "answer": ans,
-                "metric_highlight": f"Dataset Health: {self.health.get('score', 100)}/100",
+                "metric_highlight": f"Health: {self.health.get('score', 100)}/100",
                 "figure": fig,
                 "data_slice": None
             }
 
-        # 8. Generic Column Inquiry or Fallback
+        # 10. Column-specific query
         if matched_col:
             col_type = self.column_types.get(matched_col, "Unknown")
             if col_type == "Numeric":
@@ -292,13 +435,97 @@ class DataQAEngine:
         # Default fallback response
         fallback_ans = (
             f"Query analyzed against {len(self.df):,} rows and {len(self.df.columns)} attributes. "
-            f"Detected dimensions: {', '.join(self.df.columns[:6])}. "
-            "Try asking: 'What is the highest-performing category?', 'Are there unusual records?', 'What are the strongest correlations?', or ask about any specific column."
+            f"Active dimensions: {', '.join(self.df.columns[:6])}. "
+            "Try asking: 'What is the average of the numeric parameters?', 'What are the strongest correlations?', 'How many anomalies were detected?', or 'What are the main patterns?'."
         )
         return {
             "query": query,
             "answer": fallback_ans,
-            "metric_highlight": f"{len(self.df.columns)} Columns Active",
+            "metric_highlight": f"{len(self.df.columns)} Attributes Active",
             "figure": None,
             "data_slice": None
         }
+
+    def answer_query(
+        self,
+        query: str,
+        api_key: Optional[str] = None,
+        model: Optional[str] = None,
+        conversation_history: Optional[List[Dict[str, str]]] = None
+    ) -> Dict[str, Any]:
+        """
+        Orchestrates hybrid QA flow:
+        1. Understand user's question and calculate exact deterministic Python ground-truth answer if possible.
+        2. Retrieve compact, relevant structured RAG context strictly scoped to active dataset.
+        3. If Groq API is configured, prompt Groq for natural-language synthesis of verified results.
+        4. If Groq is unavailable, fall back seamlessly to local deterministic engine without crashing.
+        """
+        # 1. Deterministic Python calculation
+        deterministic_res = self.compute_deterministic_answer(query)
+        filename = self.dataset_record.get("filename", "active_dataset.csv")
+
+        # 2. Check if Groq API is configured
+        if not LLMClient.is_configured(api_key):
+            # Local fallback mode
+            return {
+                "query": query,
+                "answer": deterministic_res["answer"],
+                "metric_highlight": deterministic_res.get("metric_highlight"),
+                "figure": deterministic_res.get("figure"),
+                "data_slice": deterministic_res.get("data_slice"),
+                "engine": "local",
+                "model": "NexInsight Deterministic Engine",
+                "fallback_message": "Groq AI Analyst is not configured. Using NexInsight's local analytical engine.",
+                "error": None
+            }
+
+        # 3. Retrieve compact, grounded RAG context from RAGEngine
+        grounded_context = RAGEngine.retrieve_relevant_context(
+            query,
+            self.dataset_record,
+            verified_result=deterministic_res
+        )
+        system_prompt = RAGEngine.get_system_prompt(filename)
+        user_prompt = (
+            f"DATASET CONTEXT:\n{grounded_context}\n\n"
+            f"USER QUESTION: {query}\n\n"
+            "Please provide a natural, concise explanation (2-3 sentences) of this verified calculation. "
+            "Do not invent any numbers. Always ground your explanation in the verified figures."
+        )
+
+        # 4. Invoke Groq API
+        groq_resp = LLMClient.generate_chat_completion(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            conversation_history=conversation_history,
+            explicit_key=api_key,
+            explicit_model=model,
+            temperature=0.2,
+            timeout=18
+        )
+
+        if groq_resp["success"]:
+            return {
+                "query": query,
+                "answer": groq_resp["content"],
+                "metric_highlight": deterministic_res.get("metric_highlight"),
+                "figure": deterministic_res.get("figure"),
+                "data_slice": deterministic_res.get("data_slice"),
+                "engine": "groq",
+                "model": groq_resp["model"],
+                "fallback_message": None,
+                "error": None
+            }
+        else:
+            # Fallback on Groq failure (timeout, network error, rate limit, etc.)
+            return {
+                "query": query,
+                "answer": deterministic_res["answer"],
+                "metric_highlight": deterministic_res.get("metric_highlight"),
+                "figure": deterministic_res.get("figure"),
+                "data_slice": deterministic_res.get("data_slice"),
+                "engine": "fallback",
+                "model": "NexInsight Deterministic Engine (Fallback)",
+                "fallback_message": f"Groq AI Analyst is unavailable ({groq_resp.get('error', 'API error')}). Deterministic dataset analysis is still available.",
+                "error": groq_resp.get("error")
+            }

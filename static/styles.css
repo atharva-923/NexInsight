@@ -1,8 +1,9 @@
 /* ==========================================================================
-   NexInsight — Modern Premium Fintech SaaS Design System (Light Theme)
-   Inspired by Stripe / Linear / Modern Fintech Analytics Dashboards
+   NexInsight — Modern Premium Light Analytics SaaS Design System
+   Clean, data-dense enterprise analytics software.
+   Light background, white cards, subtle borders, high information density.
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
     --bg-app: #F5F6F8;
@@ -24,6 +25,7 @@
     --color-green: #22C55E;
     --color-orange: #F59E0B;
     --color-red: #EF4444;
+    --color-coral: #FF5A5F;
     
     --pill-green-bg: #ECFDF5;
     --pill-green-text: #15803D;
@@ -36,12 +38,11 @@
     
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 18px;
+    --radius-lg: 14px;
     --radius-pill: 9999px;
     
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 16px rgba(0, 0, 0, 0.02);
-    --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.06);
-    --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
+    --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 /* Global Reset & Base Typography */
@@ -61,7 +62,7 @@ header[data-testid="stHeader"] {
     display: none !important;
 }
 
-/* Ensure the sidebar expand/re-open toggle button is ALWAYS visible when collapsed */
+/* Sidebar expand control */
 [data-testid="stSidebarCollapsedControl"],
 [data-testid="collapsedControl"] {
     visibility: visible !important;
@@ -80,30 +81,31 @@ header[data-testid="stHeader"] {
     cursor: pointer !important;
 }
 
-[data-testid="stSidebarCollapsedControl"] button:hover,
-[data-testid="collapsedControl"] button:hover {
-    background-color: #F3F4F6 !important;
-    border-color: #D1D5DB !important;
-}
-
 .block-container {
     padding-top: 1.2rem !important;
     padding-bottom: 2.5rem !important;
     max-width: 1420px !important;
 }
 
-/* Top App Bar & Overview Title */
-.top-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+section[data-testid="stSidebar"] {
+    background-color: #FFFFFF !important;
+    border-right: 1px solid var(--border-light) !important;
+    box-shadow: 1px 0 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+.sidebar-brand-box {
+    padding: 0.6rem 0.2rem 1rem 0.2rem;
+    border-bottom: 1px solid var(--border-light);
     margin-bottom: 0.8rem;
 }
 
 .brand-title-wrap {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .brand-title {
@@ -121,15 +123,79 @@ header[data-testid="stHeader"] {
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: var(--radius-sm);
 }
 
+.sidebar-nav-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-top: 0.6rem;
+    margin-bottom: 4px;
+}
+
+/* Sidebar Radio Pills */
+section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
+    gap: 3px !important;
+}
+
+section[data-testid="stSidebar"] .stRadio label {
+    font-size: 0.84rem !important;
+    font-weight: 500 !important;
+    color: var(--text-secondary) !important;
+    padding: 0.48rem 0.85rem !important;
+    border-radius: 8px !important;
+    margin-bottom: 1px !important;
+    transition: all 0.15s ease !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+}
+
+section[data-testid="stSidebar"] .stRadio label:hover {
+    color: var(--text-primary) !important;
+    background: #F3F4F6 !important;
+}
+
+/* Active Nav Item: Sleek High-Contrast with subtle coral/red accent line */
+section[data-testid="stSidebar"] .stRadio label:has(input:checked),
+section[data-testid="stSidebar"] .stRadio label[data-checked="true"],
+section[data-testid="stSidebar"] .stRadio div[aria-checked="true"] {
+    color: #111111 !important;
+    background: #F3F4F6 !important;
+    font-weight: 700 !important;
+    border-left: 3px solid var(--color-coral) !important;
+    border-radius: 4px 8px 8px 4px !important;
+}
+
+/* Hide native radio circle */
+section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] input[type="radio"] {
+    display: none !important;
+}
+section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] div[data-testid="stRadioGroup"] input + div {
+    display: none !important;
+}
+
+.sidebar-dataset-card {
+    background: #F8FAFC;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    margin-top: 1.2rem;
+}
+
+/* ==========================================================================
+   TOP APP BAR & OVERVIEW HEADER
+   ========================================================================== */
 .overview-heading-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
 }
 
 .overview-heading {
@@ -147,7 +213,7 @@ header[data-testid="stHeader"] {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-pill);
-    padding: 6px 14px;
+    padding: 5px 13px;
     font-size: 0.8rem;
     color: var(--text-secondary);
     box-shadow: var(--shadow-card);
@@ -161,14 +227,16 @@ header[data-testid="stHeader"] {
     display: inline-block;
 }
 
-/* Top Metric Cards Row */
+/* ==========================================================================
+   METRIC KPI CARDS (White Cards, Clean Layout)
+   ========================================================================== */
 .metric-card-fintech {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-lg);
-    padding: 1.2rem 1.3rem;
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
     box-shadow: var(--shadow-card);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
     height: 100%;
 }
 
@@ -178,7 +246,7 @@ header[data-testid="stHeader"] {
 }
 
 .metric-label-compact {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
@@ -195,23 +263,27 @@ header[data-testid="stHeader"] {
     color: var(--text-primary);
     letter-spacing: -0.03em;
     line-height: 1.1;
+    font-family: 'JetBrains Mono', 'Inter', monospace;
 }
 
 .metric-subtext-clean {
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     margin-top: 0.35rem;
     line-height: 1.35;
 }
 
+/* Badges */
 .pill-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
     padding: 2px 7px;
     border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .pill-badge.green {
@@ -229,24 +301,60 @@ header[data-testid="stHeader"] {
     color: var(--pill-amber-text);
 }
 
-.pill-badge.red {
+.pill-badge.red, .pill-badge.coral {
     background: var(--pill-red-bg);
     color: var(--pill-red-text);
 }
 
-/* White Card Containers */
+.pill-badge.gray {
+    background: #F3F4F6;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   UNIFIED CHART CONTAINERS (Chart + Heading in ONE Visual Section)
+   ========================================================================== */
+.chart-card-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem 0.6rem 1.25rem;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 1.1rem;
+}
+
+.chart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.chart-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.chart-card-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+/* ==========================================================================
+   WHITE CARD CONTAINERS (Reports, Quality, Anomalies)
+   ========================================================================== */
 .white-card {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-lg);
-    padding: 1.3rem 1.4rem;
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.3rem;
     box-shadow: var(--shadow-card);
-    margin-bottom: 1.2rem;
-    transition: box-shadow 0.18s ease;
-}
-
-.white-card:hover {
-    box-shadow: var(--shadow-card-hover);
+    margin-bottom: 1.1rem;
+    transition: box-shadow 0.15s ease;
 }
 
 .card-title-fintech {
@@ -263,24 +371,24 @@ header[data-testid="stHeader"] {
     margin-top: 2px;
 }
 
-/* AI Insights Card & Structured Sub-items */
+/* AI Insights Boxes */
 .ai-summary-box {
     background: #F8FAFC;
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 0.95rem 1.1rem;
-    font-size: 0.88rem;
-    line-height: 1.55;
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
     color: var(--text-primary);
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
 }
 
 .insight-sub-card {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 0.95rem;
-    margin-bottom: 0.6rem;
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.5rem;
     transition: all 0.15s ease;
 }
 
@@ -290,7 +398,7 @@ header[data-testid="stHeader"] {
 }
 
 .insight-sub-tag {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
@@ -312,7 +420,7 @@ header[data-testid="stHeader"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.65rem 0;
+    padding: 0.6rem 0;
     border-bottom: 1px solid var(--border-subtle);
     font-size: 0.82rem;
 }
@@ -322,7 +430,7 @@ header[data-testid="stHeader"] {
 }
 
 .quality-bar-wrap {
-    width: 90px;
+    width: 80px;
     height: 6px;
     background: #E5E7EB;
     border-radius: 3px;
@@ -338,15 +446,15 @@ header[data-testid="stHeader"] {
     border-radius: 3px;
 }
 
-/* Ask Your Data Input Bar (Inspired by Zentra reference prompt box) */
+/* Ask Your Data Container */
 .ask-data-container {
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: 1.1rem 1.3rem;
     box-shadow: var(--shadow-card);
     margin-top: 0.5rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.1rem;
 }
 
 .ask-data-prompt-label {
@@ -362,84 +470,43 @@ header[data-testid="stHeader"] {
 .ask-data-response {
     background: #F8FAFC;
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 1.1rem;
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.1rem;
     margin-top: 0.8rem;
 }
 
-/* Minimal Sidebar Styling */
-section[data-testid="stSidebar"] {
-    background-color: #FFFFFF !important;
-    border-right: 1px solid var(--border-light) !important;
-    box-shadow: 1px 0 6px rgba(0, 0, 0, 0.02) !important;
+/* Chat & AI Analyst */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 1rem;
+    margin-bottom: 1.2rem;
 }
 
-.sidebar-brand-box {
-    padding: 0.6rem 0.2rem 1rem 0.2rem;
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: 1rem;
+.chat-bubble-user {
+    align-self: flex-end;
+    background-color: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 12px 12px 2px 12px;
+    padding: 0.75rem 1.1rem;
+    max-width: 85%;
+    font-size: 0.88rem;
+    color: #1E3A8A;
+    font-weight: 500;
 }
 
-.sidebar-nav-title {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-}
-
-/* Sidebar Radio Buttons transformed into Zentra-style Pills */
-section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
-    gap: 4px !important;
-}
-
-section[data-testid="stSidebar"] .stRadio label {
-    font-size: 0.86rem !important;
-    font-weight: 500 !important;
-    color: var(--text-secondary) !important;
-    padding: 0.55rem 0.85rem !important;
-    border-radius: 10px !important;
-    margin-bottom: 2px !important;
-    transition: all 0.15s ease !important;
-    border: 1px solid transparent !important;
-}
-
-section[data-testid="stSidebar"] .stRadio label:hover {
-    color: var(--text-primary) !important;
-    background: #F3F4F6 !important;
-}
-
-/* Active Radio state */
-section[data-testid="stSidebar"] .stRadio label[data-checked="true"],
-section[data-testid="stSidebar"] .stRadio div[aria-checked="true"] {
-    color: #FFFFFF !important;
-    background: #111111 !important;
-    font-weight: 600 !important;
-}
-
-/* Sidebar Active Dataset Info Box */
-.sidebar-dataset-card {
-    background: #F8FAFC;
+.chat-bubble-assistant {
+    align-self: flex-start;
+    background-color: #FFFFFF;
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 0.85rem;
-    margin-top: 1.2rem;
+    border-radius: 12px 12px 12px 2px;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    box-shadow: var(--shadow-card);
 }
 
-/* Streamlit Dataframe Overrides for Clean SaaS */
-div[data-testid="stDataFrame"] {
-    background: #FFFFFF !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: var(--radius-md) !important;
-    overflow: hidden !important;
-}
-
-div[data-testid="stDataFrame"] * {
-    font-size: 0.82rem !important;
-}
-
-/* Streamlit Button Styling */
+/* Streamlit Buttons & Dataframes */
 button[kind="primary"] {
     background-color: #111111 !important;
     color: #FFFFFF !important;
@@ -452,7 +519,7 @@ button[kind="primary"] {
 }
 
 button[kind="primary"]:hover {
-    background-color: #222222 !important;
+    background-color: #262626 !important;
 }
 
 button[kind="secondary"] {
@@ -468,3 +535,48 @@ button[kind="secondary"]:hover {
     background-color: #F9FAFB !important;
     border-color: #D1D5DB !important;
 }
+
+div[data-testid="stDataFrame"] {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: var(--radius-md) !important;
+    overflow: hidden !important;
+}
+
+div[data-testid="stDataFrame"] * {
+    font-size: 0.82rem !important;
+}
+
+/* Batch Status Cards */
+.batch-status-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.batch-status-success {
+    border-left: 3px solid var(--color-green);
+}
+
+.batch-status-failed {
+    border-left: 3px solid var(--color-red);
+    background: #FFF5F5;
+}
+
+/* Native Streamlit border container styling to match clean white card */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-card) !important;
+    padding: 1rem 1.15rem !important;
+    margin-bottom: 0.85rem !important;
+    transition: box-shadow 0.15s ease !important;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    box-shadow: var(--shadow-card-hover) !important;
+}
+

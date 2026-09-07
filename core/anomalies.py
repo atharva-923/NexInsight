@@ -28,8 +28,12 @@ class AnomalyDetector:
         - severity (High, Moderate, Low)
         - reason
         """
-        all_anomalies: List[Dict[str, Any]] = []
         column_breakdown: Dict[str, Dict[str, Any]] = {}
+        total_anomalies_count = 0
+        total_critical = 0
+        total_moderate = 0
+        total_low = 0
+        candidate_records: List[Dict[str, Any]] = []
 
         for col in self.numeric_cols:
             series = pd.to_numeric(self.df[col], errors="coerce").dropna()
@@ -47,53 +51,70 @@ class AnomalyDetector:
 
             outliers_mask = (series < lower_bound) | (series > upper_bound)
             outlier_series = series[outliers_mask]
+            n_outliers = len(outlier_series)
 
             column_breakdown[col] = {
-                "count": len(outlier_series),
+                "count": n_outliers,
                 "lower_bound": round(lower_bound, 2),
                 "upper_bound": round(upper_bound, 2),
                 "mean": round(mean_val, 2),
                 "std": round(std_val, 2)
             }
 
-            for idx, val in outlier_series.items():
-                val_float = float(val)
-                z_score = abs(val_float - mean_val) / std_val if std_val > 0 else 0.0
-                
-                # Determine severity
-                if z_score >= 3.5 or val_float > (upper_bound + 1.5 * iqr) or val_float < (lower_bound - 1.5 * iqr):
-                    severity = "Critical"
-                elif z_score >= 2.5:
-                    severity = "Moderate"
-                else:
-                    severity = "Low"
+            if n_outliers == 0:
+                continue
 
+            total_anomalies_count += n_outliers
+
+            # Vectorized z-score and severity calculation
+            vals = outlier_series.values
+            indices = outlier_series.index
+            z_scores = np.abs(vals - mean_val) / std_val if std_val > 0 else np.zeros_like(vals)
+
+            crit_mask = (z_scores >= 3.5) | (vals > (upper_bound + 1.5 * iqr)) | (vals < (lower_bound - 1.5 * iqr))
+            mod_mask = (z_scores >= 2.5) & (~crit_mask)
+            low_mask = (~crit_mask) & (~mod_mask)
+
+            total_critical += int(crit_mask.sum())
+            total_moderate += int(mod_mask.sum())
+            total_low += int(low_mask.sum())
+
+            # Collect top anomalies per column for detailed tabular display
+            max_col_records = min(n_outliers, 100)
+            if n_outliers > max_col_records:
+                top_order = np.argsort(z_scores)[-max_col_records:][::-1]
+            else:
+                top_order = np.argsort(z_scores)[::-1]
+
+            for i in top_order:
+                val_float = float(vals[i])
+                idx = indices[i]
+                z_score = float(z_scores[i])
+                severity = "Critical" if crit_mask[i] else ("Moderate" if mod_mask[i] else "Low")
                 direction = "above upper threshold" if val_float > upper_bound else "below lower threshold"
                 reason = f"Value {val_float:,.2f} is significantly {direction} ({lower_bound:,.2f} to {upper_bound:,.2f})."
 
-                all_anomalies.append({
+                candidate_records.append({
                     "row_index": int(idx),
                     "column": col,
                     "value": round(val_float, 2),
                     "normal_range": f"{lower_bound:,.2f} - {upper_bound:,.2f}",
                     "deviation": round(abs(val_float - mean_val), 2),
-                    "z_score": round(float(z_score), 2),
+                    "z_score": round(z_score, 2),
                     "severity": severity,
                     "reason": reason
                 })
 
-        # Sort all anomalies by z_score descending
-        all_anomalies.sort(key=lambda x: x["z_score"], reverse=True)
-
-        severity_counts = {
-            "Critical": sum(1 for a in all_anomalies if a["severity"] == "Critical"),
-            "Moderate": sum(1 for a in all_anomalies if a["severity"] == "Moderate"),
-            "Low": sum(1 for a in all_anomalies if a["severity"] == "Low"),
-        }
+        # Sort candidate records by z_score descending
+        candidate_records.sort(key=lambda x: x["z_score"], reverse=True)
 
         return {
-            "total_anomalies": len(all_anomalies),
-            "severity_counts": severity_counts,
+            "total_anomalies": total_anomalies_count,
+            "severity_counts": {
+                "Critical": total_critical,
+                "Moderate": total_moderate,
+                "Low": total_low
+            },
             "column_breakdown": column_breakdown,
-            "anomalies_list": all_anomalies
+            "anomalies_list": candidate_records[:300]
         }

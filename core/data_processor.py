@@ -8,7 +8,7 @@ import io
 import re
 import numpy as np
 import pandas as pd
-from typing import Dict, Any, Tuple, List
+from typing import Dict, Any, Tuple, List, Optional
 
 
 class DataProcessor:
@@ -80,13 +80,24 @@ class DataProcessor:
                 col_types[col] = "Text"
                 continue
 
-            # 1. Check Boolean
-            # Direct bool dtype or binary string/number
+            # Check direct dtypes first (instant O(1))
             if pd.api.types.is_bool_dtype(df[col]):
                 col_types[col] = "Boolean"
                 continue
                 
-            unique_vals = set(series.astype(str).str.strip().str.lower().unique())
+            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                col_types[col] = "Date"
+                continue
+
+            if pd.api.types.is_numeric_dtype(df[col]):
+                col_types[col] = "Numeric"
+                continue
+
+            # For string/object columns, use sample if large to eliminate CPU bottleneck
+            sample_series = series.head(3000) if len(series) > 3000 else series
+            
+            # 1. Check Boolean on sample
+            unique_vals = set(sample_series.astype(str).str.strip().str.lower().unique())
             bool_pairs = [
                 {"true", "false"},
                 {"yes", "no"},
@@ -98,58 +109,36 @@ class DataProcessor:
                 col_types[col] = "Boolean"
                 continue
 
-            # 2. Check Date / Datetime
-            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                col_types[col] = "Date"
-                continue
-            
-            # If string, test for datetime parsing
-            if pd.api.types.is_object_dtype(df[col]) or pd.api.types.is_string_dtype(df[col]):
-                sample = series.head(50).astype(str)
-                # Quick check if strings resemble dates (contain separators like -, /, :)
-                has_date_delims = sample.str.contains(r"[\-/:]", regex=True).mean() > 0.6
-                if has_date_delims:
-                    try:
-                        import warnings
-                        with warnings.catch_warnings():
-                            warnings.simplefilter("ignore")
-                            parsed = pd.to_datetime(sample, errors="coerce", format="mixed")
-                        valid_ratio = parsed.notna().mean()
-                        if valid_ratio >= 0.8:
-                            # Additional check: reasonable years
-                            years = parsed.dropna().dt.year
-                            if (years >= 1950).all() and (years <= 2100).all():
-                                col_types[col] = "Date"
-                                continue
-                    except Exception:
-                        pass
+            # 2. Check Date / Datetime on sample
+            sample_dates = sample_series.head(100).astype(str)
+            has_date_delims = sample_dates.str.contains(r"[\-/:]", regex=True).mean() > 0.6
+            if has_date_delims:
+                try:
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        parsed = pd.to_datetime(sample_dates, errors="coerce", format="mixed")
+                    valid_ratio = parsed.notna().mean()
+                    if valid_ratio >= 0.8:
+                        years = parsed.dropna().dt.year
+                        if (years >= 1950).all() and (years <= 2100).all():
+                            col_types[col] = "Date"
+                            continue
+                except Exception:
+                    pass
 
-            # 3. Check Numeric
-            if pd.api.types.is_numeric_dtype(df[col]):
-                # If numeric but only 2-5 unique values with small integer range, could be categorical or rating
-                # If unique values < 6 and total rows > 20, check if used as category
-                n_unique = series.nunique()
-                if n_unique <= 4 and series.dtype in [np.int64, np.int32, int]:
-                    # Let user inspect as numeric or categorical depending on context
-                    col_types[col] = "Numeric"
-                else:
-                    col_types[col] = "Numeric"
+            # 3. Check Numeric formatted strings on sample
+            cleaned_num = sample_series.astype(str).str.replace(r"[\$,€,£,%]", "", regex=True).str.replace(",", "", regex=False).str.strip()
+            converted = pd.to_numeric(cleaned_num, errors="coerce")
+            if converted.notna().mean() >= 0.85:
+                col_types[col] = "Numeric"
                 continue
-
-            # If string, test if it's formatted numeric (currency like "$1,200", percentages "45%")
-            if pd.api.types.is_object_dtype(df[col]):
-                cleaned_num = series.astype(str).str.replace(r"[\$,€,£,%]", "", regex=True).str.replace(",", "", regex=False).str.strip()
-                converted = pd.to_numeric(cleaned_num, errors="coerce")
-                if converted.notna().mean() >= 0.85:
-                    col_types[col] = "Numeric"
-                    continue
 
             # 4. Check Categorical vs Text
-            n_unique = series.nunique()
-            total_count = len(series)
+            n_unique = sample_series.nunique()
+            total_count = len(sample_series)
             
-            # Heuristic: low cardinality or ratio of unique to total is small
-            if n_unique <= 50 or (n_unique / total_count < 0.25 and n_unique < 250):
+            if n_unique <= 50 or (n_unique / total_count < 0.20 and n_unique < 250):
                 col_types[col] = "Categorical"
             else:
                 col_types[col] = "Text"
@@ -227,9 +216,9 @@ class DataProcessor:
 
             # D. Standardize Categoricals
             elif ctype == "Categorical":
-                # Normalize case if variations exist (e.g. 'Yes', 'yes')
+                # Normalize case if variations exist (e.g. 'Yes', 'yes') for columns with reasonable cardinality
                 unique_vals = cleaned[col].dropna().unique()
-                if len(unique_vals) > 0:
+                if 0 < len(unique_vals) <= 1000:
                     val_map = {}
                     seen_lower = {}
                     for v in unique_vals:
@@ -242,8 +231,8 @@ class DataProcessor:
                             # Standardize to title or original
                             seen_lower[v_lower] = v_str.capitalize() if v_str.islower() else v_str
                             val_map[v] = seen_lower[v_lower]
-                    if formatting_corrected > 0:
-                        cleaned[col] = cleaned[col].map(lambda x: val_map.get(x, x))
+                    if val_map:
+                        cleaned[col] = cleaned[col].replace(val_map)
                 
                 # Impute missing categoricals
                 if null_count > 0:
@@ -282,7 +271,7 @@ class DataProcessor:
         self.cleaning_summary = summary
         return cleaned, summary
 
-    def calculate_health_score(self, df_raw: pd.DataFrame, df_cleaned: pd.DataFrame) -> Dict[str, Any]:
+    def calculate_health_score(self, df_raw: pd.DataFrame, df_cleaned: pd.DataFrame, duplicate_rows_count: Optional[int] = None) -> Dict[str, Any]:
         """
         Dynamically calculates a comprehensive dataset health score (0 - 100).
         Factors:
@@ -300,7 +289,10 @@ class DataProcessor:
         missing_penalty = min(35.0, missing_ratio * 100.0 * 1.5)
 
         total_rows = len(df_raw)
-        duplicate_rows = int(df_raw.duplicated().sum())
+        if duplicate_rows_count is not None:
+            duplicate_rows = int(duplicate_rows_count)
+        else:
+            duplicate_rows = int(df_raw.duplicated().sum())
         dup_ratio = duplicate_rows / max(1, total_rows)
         dup_penalty = min(25.0, dup_ratio * 100.0 * 2.0)
 
@@ -308,10 +300,13 @@ class DataProcessor:
         single_val_cols = sum(1 for col in df_raw.columns if df_raw[col].nunique(dropna=False) <= 1)
         single_val_penalty = min(20.0, (single_val_cols / max(1, len(df_raw.columns))) * 40.0)
 
-        # High cardinality text penalty or dirty mixed values
+        # High cardinality text penalty or dirty mixed values (evaluated on sample for large datasets)
         consistency_penalty = 0.0
         for col in df_raw.columns:
-            types_in_col = df_raw[col].dropna().apply(lambda x: type(x).__name__).nunique()
+            sample_col = df_raw[col].dropna()
+            if len(sample_col) > 1000:
+                sample_col = sample_col.head(1000)
+            types_in_col = sample_col.apply(lambda x: type(x).__name__).nunique()
             if types_in_col > 2:
                 consistency_penalty += 3.0
         consistency_penalty = min(20.0, consistency_penalty)

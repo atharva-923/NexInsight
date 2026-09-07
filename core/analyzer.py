@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from typing import Dict, Any, List, Optional
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 
@@ -221,46 +221,82 @@ class DataAnalyzer:
         try:
             scaler = StandardScaler()
             scaled_features = scaler.fit_transform(features_df)
+            n_samples = len(scaled_features)
 
-            # Determine best k between 2 and min(5, len(features_df) - 1)
-            max_k = min(5, len(features_df) // 5)
+            # Determine best k between 2 and min(5, n_samples - 1)
+            max_k = min(5, n_samples // 5)
             if max_k < 2:
                 max_k = 2
 
             best_k = 3 if max_k >= 3 else 2
             best_score = -1.0
 
+            # Representative sample for silhouette score to eliminate O(N^2) bottleneck on large datasets
+            eval_sample_size = min(n_samples, 2000)
+            rng = np.random.RandomState(42)
+            eval_idx = rng.choice(n_samples, size=eval_sample_size, replace=False) if n_samples > eval_sample_size else None
+            eval_features = scaled_features[eval_idx] if eval_idx is not None else scaled_features
+
             for k in range(2, max_k + 1):
-                km = KMeans(n_clusters=k, random_state=42, n_init=10)
-                labels = km.fit_predict(scaled_features)
-                if len(set(labels)) > 1:
-                    score = silhouette_score(scaled_features, labels)
+                if n_samples > 25000:
+                    km = MiniBatchKMeans(n_clusters=k, random_state=42, batch_size=2048, n_init=3)
+                else:
+                    km = KMeans(n_clusters=k, random_state=42, n_init=5)
+                
+                # Fit model
+                if n_samples > 25000 and eval_idx is not None:
+                    km.fit(eval_features)
+                    eval_labels = km.predict(eval_features)
+                else:
+                    labels = km.fit_predict(scaled_features)
+                    eval_labels = labels[eval_idx] if eval_idx is not None else labels
+
+                if len(set(eval_labels)) > 1:
+                    score = silhouette_score(eval_features, eval_labels)
                     if score > best_score:
                         best_score = score
                         best_k = k
 
-            # Fit final model
-            final_km = KMeans(n_clusters=best_k, random_state=42, n_init=10)
-            cluster_labels = final_km.fit_predict(scaled_features)
+            # Fit final model with best_k
+            if n_samples > 25000:
+                final_km = MiniBatchKMeans(n_clusters=best_k, random_state=42, batch_size=2048, n_init=3)
+                final_km.fit(eval_features if eval_idx is not None else scaled_features)
+                cluster_labels = final_km.predict(scaled_features)
+            else:
+                final_km = KMeans(n_clusters=best_k, random_state=42, n_init=5)
+                cluster_labels = final_km.fit_predict(scaled_features)
 
             # 2D PCA for visualization
             pca = PCA(n_components=2)
-            pca_coords = pca.fit_transform(scaled_features)
+            # Sample for PCA visualization to prevent massive JSON transfer to Plotly
+            viz_sample_size = min(n_samples, 2500)
+            viz_idx = rng.choice(n_samples, size=viz_sample_size, replace=False) if n_samples > viz_sample_size else None
+            
+            if viz_idx is not None:
+                viz_scaled = scaled_features[viz_idx]
+                viz_labels = cluster_labels[viz_idx]
+            else:
+                viz_scaled = scaled_features
+                viz_labels = cluster_labels
 
-            # Build cluster profiles
+            pca_coords = pca.fit_transform(viz_scaled)
+
+            # Build cluster profiles on full dataset
             clustered_df = features_df.copy()
             clustered_df["Cluster"] = [f"Cluster {l + 1}" for l in cluster_labels]
             cluster_profiles = []
             
             cluster_counts = pd.Series(cluster_labels).value_counts().to_dict()
+            global_mean = features_df[self.numeric_cols].mean()
+
             for cluster_id in range(best_k):
                 c_name = f"Cluster {cluster_id + 1}"
                 count = cluster_counts.get(cluster_id, 0)
                 pct = round((count / len(features_df)) * 100, 1)
                 
                 # Get mean characteristics of this cluster
-                c_mean = clustered_df[clustered_df["Cluster"] == c_name][self.numeric_cols].mean()
-                global_mean = features_df[self.numeric_cols].mean()
+                cluster_subset = clustered_df[clustered_df["Cluster"] == c_name][self.numeric_cols]
+                c_mean = cluster_subset.mean() if len(cluster_subset) > 0 else global_mean
                 
                 distinguishing = []
                 for col in self.numeric_cols:
@@ -286,7 +322,7 @@ class DataAnalyzer:
                 "profiles": cluster_profiles,
                 "pca_x": pca_coords[:, 0].tolist(),
                 "pca_y": pca_coords[:, 1].tolist(),
-                "labels": [f"Cluster {l + 1}" for l in cluster_labels]
+                "labels": [f"Cluster {l + 1}" for l in viz_labels]
             }
         except Exception:
             return None
