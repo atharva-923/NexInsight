@@ -95,6 +95,11 @@ def set_active_dataset(dataset_id: str):
     """Activates a dataset in session state and syncs working variables with zero recomputation."""
     if dataset_id in st.session_state.datasets:
         st.session_state.active_dataset_id = dataset_id
+        for k in ["sidebar_dataset_selector", "overview_dataset_selector", "datasets_page_selector"]:
+            try:
+                st.session_state[k] = dataset_id
+            except Exception:
+                pass
         ds = st.session_state.datasets[dataset_id]
         st.session_state.current_file_name = ds["filename"]
         st.session_state.raw_df = ds["raw_df"]
@@ -105,6 +110,24 @@ def set_active_dataset(dataset_id: str):
         st.session_state.analysis_results = ds["analysis_results"]
         st.session_state.anomalies_data = ds["anomalies_data"]
         st.session_state.ai_insights = ds["ai_insights"]
+
+
+def _on_sidebar_dataset_change():
+    sel = st.session_state.get("sidebar_dataset_selector")
+    if sel and sel in st.session_state.datasets:
+        set_active_dataset(sel)
+
+
+def _on_overview_dataset_change():
+    sel = st.session_state.get("overview_dataset_selector")
+    if sel and sel in st.session_state.datasets:
+        set_active_dataset(sel)
+
+
+def _on_datasets_page_change():
+    sel = st.session_state.get("datasets_page_selector")
+    if sel and sel in st.session_state.datasets:
+        set_active_dataset(sel)
 
 
 def load_single_dataset(file_obj, filename: str, set_as_active: bool = True) -> Dict[str, Any]:
@@ -168,18 +191,17 @@ if len(st.session_state.datasets) > 1:
     )
     dataset_opts = {d_id: d["filename"] for d_id, d in st.session_state.datasets.items()}
     cur_id = st.session_state.active_dataset_id if st.session_state.active_dataset_id in dataset_opts else list(dataset_opts.keys())[0]
+    if st.session_state.get("sidebar_dataset_selector") not in dataset_opts or st.session_state.get("sidebar_dataset_selector") != cur_id:
+        st.session_state["sidebar_dataset_selector"] = cur_id
     
-    selected_sidebar_id = st.sidebar.selectbox(
+    st.sidebar.selectbox(
         "Select Active Dataset",
         options=list(dataset_opts.keys()),
         format_func=lambda x: dataset_opts[x],
-        index=list(dataset_opts.keys()).index(cur_id),
         key="sidebar_dataset_selector",
+        on_change=_on_sidebar_dataset_change,
         label_visibility="collapsed"
     )
-    if selected_sidebar_id != st.session_state.active_dataset_id:
-        set_active_dataset(selected_sidebar_id)
-        st.rerun()
 
 # Developer / Test Benchmark selector tucked cleanly into an expander
 with st.sidebar.expander("Developer / Test Benchmarks", expanded=False):
@@ -374,21 +396,20 @@ if nav_page == "Overview":
     if len(st.session_state.datasets) > 1:
         dataset_opts = {d_id: d["filename"] for d_id, d in st.session_state.datasets.items()}
         cur_id = st.session_state.active_dataset_id
+        if st.session_state.get("overview_dataset_selector") not in dataset_opts or st.session_state.get("overview_dataset_selector") != cur_id:
+            st.session_state["overview_dataset_selector"] = cur_id
         
         sw_col1, sw_col2 = st.columns([1.5, 2.5])
         with sw_col1:
             st.markdown("<span style='font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: #6B7280; letter-spacing: 0.06em;'>Switch Active Dataset:</span>", unsafe_allow_html=True)
-            new_active_id = st.selectbox(
+            st.selectbox(
                 "Active Dataset Switcher",
                 options=list(dataset_opts.keys()),
                 format_func=lambda x: dataset_opts[x],
-                index=list(dataset_opts.keys()).index(cur_id),
                 key="overview_dataset_selector",
+                on_change=_on_overview_dataset_change,
                 label_visibility="collapsed"
             )
-            if new_active_id != st.session_state.active_dataset_id:
-                set_active_dataset(new_active_id)
-                st.rerun()
 
         with sw_col2:
             st.markdown(
@@ -1345,16 +1366,15 @@ elif nav_page == "Datasets":
         with sw_col_a:
             dataset_opts = {d_id: d["filename"] for d_id, d in st.session_state.datasets.items()}
             cur_id = st.session_state.active_dataset_id
-            sel_id = st.selectbox(
+            if st.session_state.get("datasets_page_selector") not in dataset_opts or st.session_state.get("datasets_page_selector") != cur_id:
+                st.session_state["datasets_page_selector"] = cur_id if cur_id in dataset_opts else list(dataset_opts.keys())[0]
+            st.selectbox(
                 "Change active dataset scope:",
                 options=list(dataset_opts.keys()),
                 format_func=lambda x: dataset_opts[x],
-                index=list(dataset_opts.keys()).index(cur_id) if cur_id in dataset_opts else 0,
-                key="datasets_page_selector"
+                key="datasets_page_selector",
+                on_change=_on_datasets_page_change
             )
-            if sel_id != st.session_state.active_dataset_id:
-                set_active_dataset(sel_id)
-                st.rerun()
 
         with sw_col_b:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
