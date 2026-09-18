@@ -2,11 +2,10 @@
 NexInsight - Factual AI Insight Synthesis Engine
 Generates human-readable, executive insights derived strictly from
 computed statistical and machine learning results (zero hallucinations).
-Supports optional LLM enhancement when an API key is provided.
 """
 
-from typing import Dict, Any, List, Optional
-import os
+from typing import Dict, Any, List
+
 
 
 class InsightEngine:
@@ -145,36 +144,3 @@ class InsightEngine:
             "observations": observations[:5]
         }
 
-    @classmethod
-    def synthesize_with_llm(
-        cls,
-        analysis_data: Dict[str, Any],
-        api_key: Optional[str] = None
-    ) -> Optional[str]:
-        """
-        Optional LLM connector (e.g. Gemini / OpenAI) if user configures an API key.
-        Uses exact calculated facts as context to draft an executive memo.
-        """
-        if not api_key:
-            return None
-
-        # If Gemini key or environment key is present
-        try:
-            import requests
-            prompt = (
-                "You are an elite Senior Data Analyst at McKinsey. "
-                "Synthesize the following strictly computed dataset analysis into an executive summary memo for leadership. "
-                "Do NOT invent any numbers. Use only the provided statistics.\n\n"
-                f"ANALYSIS DATA:\n{str(analysis_data)[:3500]}\n\n"
-                "Provide: Executive Brief, Strategic Takeaways, and Risk Warnings in clean markdown."
-            )
-            # Example Gemini REST call
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
-            payload = {"contents": [{"parts": [{"text": prompt}]}]}
-            res = requests.post(url, json=payload, timeout=12)
-            if res.status_code == 200:
-                data = res.json()
-                return data["candidates"][0]["content"]["parts"][0]["text"]
-        except Exception:
-            return None
-        return None

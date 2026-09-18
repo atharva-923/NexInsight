@@ -2,7 +2,7 @@
 NexInsight - Natural Language 'Ask Your Data' Engine
 Interprets plain-English analytical queries, calculates ground-truth statistics via Pandas,
 retrieves targeted tabular context via RAG, and synthesizes natural-language answers
-via xAI Grok API with seamless local fallback.
+via Groq API with seamless local fallback.
 """
 
 import re
@@ -13,14 +13,14 @@ from typing import Dict, Any, Optional, Tuple, List
 import plotly.express as px
 import plotly.graph_objects as go
 from core.visualizer import Visualizer
-from core.llm_client import LLMClient, GrokClient
-from core.rag_engine import RAGEngine, RAGRetriever
+from core.llm_client import LLMClient
+from core.rag_engine import RAGEngine
 from core.query_planner import QueryPlanner
 from core.safe_executor import SafeQueryExecutor
 
 
 class DataQAEngine:
-    """Hybrid Data QA engine combining deterministic Pandas truth with Grok natural reasoning."""
+    """Hybrid Data QA engine combining deterministic Pandas truth with Groq natural reasoning."""
 
     def __init__(
         self,
@@ -457,7 +457,6 @@ class DataQAEngine:
             return True
             
         # Conjunctions implying multi-step
-        import re
         words = re.findall(r'\b\w+\b', q)
         if "and" in words:
             return True

@@ -15,11 +15,15 @@ Verifies all 15 core requirements:
 12. Missing API key handling
 13. Invalid API key handling (HTTP 401 safety)
 14. Empty dataset handling
-15. Different schemas (Datasets A, B, C, D, E, and Olist datasets)
+15. Different schemas (Datasets A, B, C, D, E)
+
+Test data is generated synthetically in setUpClass; no committed CSV/XLSX files required.
 """
 
 import os
 import sys
+import tempfile
+import shutil
 import unittest
 import pandas as pd
 import numpy as np
@@ -27,6 +31,10 @@ import numpy as np
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from tests.fixtures import (
+    make_dataset_a, make_dataset_b, make_dataset_c,
+    make_dataset_d, make_dataset_e, write_csv,
+)
 from core.data_processor import DataProcessor
 from core.analyzer import DataAnalyzer
 from core.anomalies import AnomalyDetector
@@ -41,18 +49,34 @@ class TestGroqRAGSuite(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Preload test datasets for comprehensive cross-schema testing."""
-        cls.ds_a = BatchManager.process_single_file("test_datasets/dataset_a_sales.csv", "dataset_a_sales.csv")
-        cls.ds_b = BatchManager.process_single_file("test_datasets/dataset_b_server_metrics.csv", "dataset_b_server_metrics.csv")
-        cls.ds_c = BatchManager.process_single_file("test_datasets/dataset_c_survey_dirty.csv", "dataset_c_survey_dirty.csv")
-        cls.ds_d = BatchManager.process_single_file("test_datasets/dataset_d_categorical.csv", "dataset_d_categorical.csv")
-        cls.ds_e = BatchManager.process_single_file("test_datasets/dataset_e_sensor_numeric.csv", "dataset_e_sensor_numeric.csv")
+        """Write synthetic datasets A-E to a temp directory and ingest them."""
+        cls._tmpdir = tempfile.mkdtemp(prefix="nexinsight_test_")
 
-        # Optional Olist dataset if present
-        olist_path = r"C:\Users\Atharva\OneDrive\Desktop\Projects\crate\server\csv-data\olist_products_dataset.csv"
+        specs = [
+            ("dataset_a_sales.csv",          make_dataset_a(n=500)),
+            ("dataset_b_server_metrics.csv", make_dataset_b(n=600)),
+            ("dataset_c_survey_dirty.csv",   make_dataset_c()),
+            ("dataset_d_categorical.csv",    make_dataset_d()),
+            ("dataset_e_sensor_numeric.csv", make_dataset_e()),
+        ]
+        paths = {}
+        for fname, df in specs:
+            p = os.path.join(cls._tmpdir, fname)
+            write_csv(df, p)
+            paths[fname] = p
+
+        cls.ds_a = BatchManager.process_single_file(paths["dataset_a_sales.csv"],          "dataset_a_sales.csv")
+        cls.ds_b = BatchManager.process_single_file(paths["dataset_b_server_metrics.csv"], "dataset_b_server_metrics.csv")
+        cls.ds_c = BatchManager.process_single_file(paths["dataset_c_survey_dirty.csv"],   "dataset_c_survey_dirty.csv")
+        cls.ds_d = BatchManager.process_single_file(paths["dataset_d_categorical.csv"],    "dataset_d_categorical.csv")
+        cls.ds_e = BatchManager.process_single_file(paths["dataset_e_sensor_numeric.csv"], "dataset_e_sensor_numeric.csv")
+
+        # Olist dataset is not committed; always skip
         cls.ds_olist = None
-        if os.path.exists(olist_path):
-            cls.ds_olist = BatchManager.process_single_file(olist_path, "olist_products_dataset.csv")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls._tmpdir, ignore_errors=True)
 
     # -------------------------------------------------------------------------
     # 1. RAG Context Creation (All 8 Structured Knowledge Sections)

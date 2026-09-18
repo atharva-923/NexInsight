@@ -211,7 +211,3 @@ class LLMClient:
                 "error": f"API error: {type(e).__name__}",
                 "content": ""
             }
-
-
-# Backwards compatibility alias
-GrokClient = LLMClient

@@ -205,28 +205,8 @@ if len(st.session_state.datasets) > 1:
 
 # Developer / Test Benchmark selector tucked cleanly into an expander
 with st.sidebar.expander("Developer / Test Benchmarks", expanded=False):
-    sample_options = {
-        "Dataset A (Sales & Trends)": "test_datasets/dataset_a_sales.csv",
-        "Dataset B (Server Metrics)": "test_datasets/dataset_b_server_metrics.csv",
-        "Dataset C (Survey - Dirty)": "test_datasets/dataset_c_survey_dirty.csv",
-        "Dataset D (Categorical)": "test_datasets/dataset_d_categorical.csv",
-        "Dataset E (Sensors - Numeric)": "test_datasets/dataset_e_sensor_numeric.csv"
-    }
-    selected_sample = st.selectbox(
-        "Quick Switch Dataset",
-        list(sample_options.keys()),
-        index=0,
-        key="sidebar_sample_select"
-    )
-    if st.button("Load Dataset", use_container_width=True, key="sidebar_load_sample_btn"):
-        target_path = sample_options[selected_sample]
-        if os.path.exists(target_path):
-            filename = os.path.basename(target_path)
-            with st.spinner("Processing dataset..."):
-                res = load_single_dataset(target_path, filename, set_as_active=True)
-            st.rerun()
-        else:
-            st.warning(f"Benchmark file not found: {target_path}")
+    st.info("Test datasets are now generated synthetically during test execution. Please upload your own data to test the application.")
+
 
 # Sidebar Active Scope Box
 if st.session_state.active_dataset_id and st.session_state.active_dataset_id in st.session_state.datasets:

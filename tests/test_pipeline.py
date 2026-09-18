@@ -1,10 +1,14 @@
 """
 Comprehensive End-to-End Pipeline Tests for NexInsight
 Validates all 5 diverse test datasets and edge cases without assumptions.
+
+Test data is generated synthetically in setUpClass; no committed CSV/XLSX files required.
 """
 
 import os
 import sys
+import tempfile
+import shutil
 import unittest
 import pandas as pd
 import numpy as np
@@ -12,6 +16,10 @@ import numpy as np
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from tests.fixtures import (
+    make_dataset_a, make_dataset_b, make_dataset_c,
+    make_dataset_d, make_dataset_e, write_csv,
+)
 from core.data_processor import DataProcessor
 from core.analyzer import DataAnalyzer
 from core.visualizer import Visualizer
@@ -21,6 +29,27 @@ from core.qa_engine import DataQAEngine
 
 
 class TestNexInsightPipeline(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        """Write synthetic datasets A-E to a temp directory."""
+        cls._tmpdir = tempfile.mkdtemp(prefix="nexinsight_test_")
+        
+        cls.csv_a = os.path.join(cls._tmpdir, "dataset_a_sales.csv")
+        cls.csv_b = os.path.join(cls._tmpdir, "dataset_b_server_metrics.csv")
+        cls.csv_c = os.path.join(cls._tmpdir, "dataset_c_survey_dirty.csv")
+        cls.csv_d = os.path.join(cls._tmpdir, "dataset_d_categorical.csv")
+        cls.csv_e = os.path.join(cls._tmpdir, "dataset_e_sensor_numeric.csv")
+        
+        write_csv(make_dataset_a(), cls.csv_a)
+        write_csv(make_dataset_b(), cls.csv_b)
+        write_csv(make_dataset_c(), cls.csv_c)
+        write_csv(make_dataset_d(), cls.csv_d)
+        write_csv(make_dataset_e(), cls.csv_e)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls._tmpdir, ignore_errors=True)
 
     def setUp(self):
         self.processor = DataProcessor()
@@ -82,25 +111,25 @@ class TestNexInsightPipeline(unittest.TestCase):
         print(f"PASS: {label} ({filename}) - {len(cleaned_df)} rows, Health: {health['score']}/100, Charts: {len(charts)}")
 
     def test_dataset_a_sales(self):
-        self._run_full_pipeline_check("test_datasets/dataset_a_sales.csv", "Dataset A (Sales)")
+        self._run_full_pipeline_check(self.csv_a, "Dataset A (Sales)")
 
     def test_dataset_b_servers(self):
-        self._run_full_pipeline_check("test_datasets/dataset_b_server_metrics.csv", "Dataset B (Server Metrics)")
+        self._run_full_pipeline_check(self.csv_b, "Dataset B (Server Metrics)")
 
     def test_dataset_c_survey_dirty(self):
         # Must remove duplicates and impute missing
-        self._run_full_pipeline_check("test_datasets/dataset_c_survey_dirty.csv", "Dataset C (Dirty Survey)")
-        res = self.processor.process("test_datasets/dataset_c_survey_dirty.csv", "dataset_c_survey_dirty.csv")
+        self._run_full_pipeline_check(self.csv_c, "Dataset C (Dirty Survey)")
+        res = self.processor.process(self.csv_c, "dataset_c_survey_dirty.csv")
         self.assertTrue(res["cleaning_summary"]["duplicates_removed"] > 0)
         self.assertTrue(res["cleaning_summary"]["missing_values_handled"] > 0)
 
     def test_dataset_d_categorical(self):
         # Must not crash when there are NO numerical columns or dates
-        self._run_full_pipeline_check("test_datasets/dataset_d_categorical.csv", "Dataset D (Categorical)")
+        self._run_full_pipeline_check(self.csv_d, "Dataset D (Categorical)")
 
     def test_dataset_e_sensors(self):
         # Must not crash when there are NO categorical columns or dates
-        self._run_full_pipeline_check("test_datasets/dataset_e_sensor_numeric.csv", "Dataset E (Numeric Sensors)")
+        self._run_full_pipeline_check(self.csv_e, "Dataset E (Numeric Sensors)")
 
     def test_edge_case_minimal(self):
         # Test minimal 2-row dataframe

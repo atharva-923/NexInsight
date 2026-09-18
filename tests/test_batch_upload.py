@@ -8,18 +8,26 @@ D. Multiple XLSX files
 E. CSV + XLSX together
 F. One invalid file + valid files
 G. Multiple files with same/similar filenames (name collision safety)
-H. Existing five test datasets in batch
+H. All five test schemas in batch
 I. Dataset isolation and switching (zero leakage between datasets)
+
+All fixture files are generated synthetically using tempfile; no committed datasets required.
 """
 
 import os
 import sys
+import tempfile
+import shutil
 import unittest
-import pandas as pd
 
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from tests.fixtures import (
+    make_dataset_a, make_dataset_b, make_dataset_c,
+    make_dataset_d, make_dataset_e, make_batch_xlsx,
+    write_csv, write_xlsx, write_corrupt_xlsx, write_empty_csv,
+)
 from core.batch_manager import BatchManager
 from core.qa_engine import DataQAEngine
 
@@ -27,15 +35,35 @@ from core.qa_engine import DataQAEngine
 class TestBatchUpload(unittest.TestCase):
 
     def setUp(self):
-        self.csv_a = "test_datasets/dataset_a_sales.csv"
-        self.csv_b = "test_datasets/dataset_b_server_metrics.csv"
-        self.csv_c = "test_datasets/dataset_c_survey_dirty.csv"
-        self.csv_d = "test_datasets/dataset_d_categorical.csv"
-        self.csv_e = "test_datasets/dataset_e_sensor_numeric.csv"
-        self.xlsx_1 = "test_datasets/test_batch_1.xlsx"
-        self.xlsx_2 = "test_datasets/test_batch_2.xlsx"
-        self.invalid_empty = "test_datasets/test_invalid_empty.csv"
-        self.corrupt_xlsx = "test_datasets/test_corrupt.xlsx"
+        """Create a fresh temporary directory with all fixture files before each test."""
+        self._tmpdir = tempfile.mkdtemp(prefix="nexinsight_batch_")
+
+        # CSV fixtures (matching schemas used by isolation / column assertions)
+        self.csv_a = os.path.join(self._tmpdir, "dataset_a_sales.csv")
+        self.csv_b = os.path.join(self._tmpdir, "dataset_b_server_metrics.csv")
+        self.csv_c = os.path.join(self._tmpdir, "dataset_c_survey_dirty.csv")
+        self.csv_d = os.path.join(self._tmpdir, "dataset_d_categorical.csv")
+        self.csv_e = os.path.join(self._tmpdir, "dataset_e_sensor_numeric.csv")
+        write_csv(make_dataset_a(), self.csv_a)
+        write_csv(make_dataset_b(), self.csv_b)
+        write_csv(make_dataset_c(), self.csv_c)
+        write_csv(make_dataset_d(), self.csv_d)
+        write_csv(make_dataset_e(), self.csv_e)
+
+        # XLSX fixtures (Scenario B requires exactly 100 rows)
+        self.xlsx_1 = os.path.join(self._tmpdir, "test_batch_1.xlsx")
+        self.xlsx_2 = os.path.join(self._tmpdir, "test_batch_2.xlsx")
+        write_xlsx(make_batch_xlsx(n=100), self.xlsx_1)
+        write_xlsx(make_batch_xlsx(n=80),  self.xlsx_2)
+
+        # Invalid / corrupt fixtures
+        self.invalid_empty  = os.path.join(self._tmpdir, "test_invalid_empty.csv")
+        self.corrupt_xlsx   = os.path.join(self._tmpdir, "test_corrupt.xlsx")
+        write_empty_csv(self.invalid_empty)
+        write_corrupt_xlsx(self.corrupt_xlsx)
+
+    def tearDown(self):
+        shutil.rmtree(self._tmpdir, ignore_errors=True)
 
     def test_scenario_a_single_csv(self):
         """A. One CSV upload"""

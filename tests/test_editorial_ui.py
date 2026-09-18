@@ -1,10 +1,14 @@
 """
 End-to-end integration test verifying the Editorial Enterprise UI logic,
 data extraction, and calculations across all datasets.
+
+Test data is generated synthetically in setUpClass; no committed CSV/XLSX files required.
 """
 
 import os
 import sys
+import tempfile
+import shutil
 import unittest
 import pandas as pd
 import numpy as np
@@ -12,6 +16,10 @@ import numpy as np
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from tests.fixtures import (
+    make_dataset_a, make_dataset_b, make_dataset_c,
+    make_dataset_d, make_dataset_e, write_csv,
+)
 from core.data_processor import DataProcessor
 from core.analyzer import DataAnalyzer
 from core.visualizer import Visualizer
@@ -23,13 +31,33 @@ from core.batch_manager import BatchManager
 
 class TestEditorialUI(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        """Write synthetic datasets A-E to a temp directory."""
+        cls._tmpdir = tempfile.mkdtemp(prefix="nexinsight_test_")
+        
+        specs = [
+            ("dataset_a_sales.csv",          make_dataset_a(n=500)),
+            ("dataset_b_server_metrics.csv", make_dataset_b(n=600)),
+            ("dataset_c_survey_dirty.csv",   make_dataset_c()),
+            ("dataset_d_categorical.csv",    make_dataset_d()),
+            ("dataset_e_sensor_numeric.csv", make_dataset_e()),
+        ]
+        cls.paths = {}
+        for fname, df in specs:
+            p = os.path.join(cls._tmpdir, fname)
+            write_csv(df, p)
+            cls.paths[fname] = p
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls._tmpdir, ignore_errors=True)
+
     def setUp(self):
         self.datasets = {}
-        for fname in ["dataset_a_sales.csv", "dataset_b_server_metrics.csv", "dataset_c_survey_dirty.csv", "dataset_d_categorical.csv", "dataset_e_sensor_numeric.csv"]:
-            path = os.path.join("test_datasets", fname)
-            if os.path.exists(path):
-                res = BatchManager.process_single_file(path, fname)
-                self.datasets[res["id"]] = res
+        for fname, path in self.paths.items():
+            res = BatchManager.process_single_file(path, fname)
+            self.datasets[res["id"]] = res
 
     def test_overview_kpis_and_charts(self):
         """Verify Overview KPI metrics and charts on all datasets."""

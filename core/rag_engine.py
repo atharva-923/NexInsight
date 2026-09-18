@@ -313,7 +313,3 @@ class RAGEngine:
             output_chunks.append("<dataset_context>\n" + "\n\n".join(dataset_chunks) + "\n</dataset_context>")
 
         return "\n\n".join(output_chunks)
-
-
-# Backwards compatibility alias
-RAGRetriever = RAGEngine

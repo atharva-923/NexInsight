@@ -8,16 +8,20 @@ Verifies:
 5. Multi-dataset state isolation and zero cross-dataset leakage
 6. Multi-turn conversation memory isolation
 7. Handling unanswerable questions
+
+Test data is generated synthetically in setUpClass; no committed CSV/XLSX files required.
 """
 
 import os
 import sys
+import tempfile
+import shutil
 import unittest
-import pandas as pd
 
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from tests.fixtures import make_dataset_a, make_dataset_b, write_csv
 from core.data_processor import DataProcessor
 from core.analyzer import DataAnalyzer
 from core.anomalies import AnomalyDetector
@@ -32,9 +36,18 @@ class TestGrokRAG(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Ingest Dataset A (Sales) and Dataset B (Server Metrics)
-        cls.ds_a = BatchManager.process_single_file("test_datasets/dataset_a_sales.csv", "dataset_a_sales.csv")
-        cls.ds_b = BatchManager.process_single_file("test_datasets/dataset_b_server_metrics.csv", "dataset_b_server_metrics.csv")
+        """Write synthetic datasets A and B to a temp directory and ingest them."""
+        cls._tmpdir = tempfile.mkdtemp(prefix="nexinsight_test_")
+        path_a = os.path.join(cls._tmpdir, "dataset_a_sales.csv")
+        path_b = os.path.join(cls._tmpdir, "dataset_b_server_metrics.csv")
+        write_csv(make_dataset_a(n=500), path_a)
+        write_csv(make_dataset_b(n=600), path_b)
+        cls.ds_a = BatchManager.process_single_file(path_a, "dataset_a_sales.csv")
+        cls.ds_b = BatchManager.process_single_file(path_b, "dataset_b_server_metrics.csv")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls._tmpdir, ignore_errors=True)
 
     def test_01_grok_client_offline_fallback(self):
         """1. GrokClient handles missing/invalid API key gracefully."""
