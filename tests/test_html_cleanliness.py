@@ -56,9 +56,6 @@ class TestHTMLCleanliness(unittest.TestCase):
 
         self.assertEqual(len(unbalanced), 0, f"Found unbalanced st.markdown div tags at lines: {unbalanced}")
 
-    def test_sidebar_sample_benchmark_not_in_primary_nav(self):
-        """Verify Sample Benchmark is inside an expander and not in main sidebar."""
-        self.assertIn('with st.sidebar.expander("Developer / Test Benchmarks"', self.app_content)
 
 
 if __name__ == "__main__":

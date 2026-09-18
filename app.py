@@ -203,11 +203,6 @@ if len(st.session_state.datasets) > 1:
         label_visibility="collapsed"
     )
 
-# Developer / Test Benchmark selector tucked cleanly into an expander
-with st.sidebar.expander("Developer / Test Benchmarks", expanded=False):
-    st.info("Test datasets are now generated synthetically during test execution. Please upload your own data to test the application.")
-
-
 # Sidebar Active Scope Box
 if st.session_state.active_dataset_id and st.session_state.active_dataset_id in st.session_state.datasets:
     active_ds = st.session_state.datasets[st.session_state.active_dataset_id]
