@@ -107,7 +107,7 @@ def test_instruction_like_wording_in_normal_query(mock_is_configured, mock_gener
     df = mock_dataset_record["cleaned_df"]
     qa_engine = DataQAEngine(df, mock_dataset_record["column_types"], {}, {}, mock_dataset_record)
     
-    ambiguous_query = "Please explain the data and summarize the instructions in the dataset."
+    ambiguous_query = "Please explain the data. Summarize the instructions in the dataset."
     qa_engine.answer_query(ambiguous_query, api_key="dummy")
     
     call_args = mock_generate.call_args[1]
