@@ -194,18 +194,57 @@ class Visualizer:
         val_counts = df[cat_col].dropna().value_counts().head(6).reset_index()
         val_counts.columns = [cat_col, "Count"]
 
+        # Detect if labels are long free-text (avg > 20 chars)
+        avg_label_len = val_counts[cat_col].astype(str).str.len().mean()
+        long_labels = avg_label_len > 20
+
+        # Truncated display labels (for legend + slice text)
+        max_label_len = 28
+        val_counts["_label_display"] = val_counts[cat_col].astype(str).apply(
+            lambda x: x[:max_label_len] + "..." if len(x) > max_label_len else x
+        )
+
         fig = px.pie(
             val_counts,
-            names=cat_col,
+            names="_label_display",
             values="Count",
             hole=0.62,
-            color_discrete_sequence=[cls.THEME["primary_blue"], cls.THEME["pink"], cls.THEME["green"], cls.THEME["purple"], cls.THEME["orange"], "#64748B"]
+            color_discrete_sequence=[
+                cls.THEME["primary_blue"], cls.THEME["pink"], cls.THEME["green"],
+                cls.THEME["purple"], cls.THEME["orange"], "#64748B"
+            ],
+            hover_data={cat_col: True, "Count": True, "_label_display": False}
         )
-        fig.update_traces(
-            textinfo="percent+label",
-            textposition="outside",
-            marker=dict(line=dict(color="#FFFFFF", width=2))
+
+        if long_labels:
+            # Show only percentage on slices; full label in hover
+            fig.update_traces(
+                textinfo="percent",
+                textposition="inside",
+                insidetextorientation="horizontal",
+                marker=dict(line=dict(color="#FFFFFF", width=2)),
+                hovertemplate="<b>%{customdata[0]}</b><br>Count: %{value:,}<br>Share: %{percent}<extra></extra>"
+            )
+        else:
+            fig.update_traces(
+                textinfo="percent+label",
+                textposition="outside",
+                marker=dict(line=dict(color="#FFFFFF", width=2))
+            )
+
+        fig.update_layout(
+            legend=dict(
+                orientation="v",
+                yanchor="middle",
+                y=0.5,
+                xanchor="left",
+                x=1.02,
+                font=dict(size=10, color="#374151"),
+                itemwidth=30
+            ),
+            showlegend=True
         )
+
         title = f"Share by {cat_col}"
         return cls.apply_saas_theme(fig, title)
 
