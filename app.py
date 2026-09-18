@@ -285,20 +285,75 @@ st.markdown(
 # ==============================================================================
 if nav_page == "Overview":
     if not st.session_state.datasets or not st.session_state.active_dataset_id:
-        st.info("No dataset is currently loaded. Upload a CSV or Excel file below or navigate to the **Datasets** tab to begin autonomous analysis.")
-        empty_upload = st.file_uploader(
-            "Upload CSV or Excel file to begin",
+        st.info("No dataset is currently loaded. Upload one or multiple CSV or Excel files below to begin autonomous analysis.")
+        empty_uploads = st.file_uploader(
+            "Upload CSV or Excel files to begin",
             type=["csv", "xlsx", "xls"],
+            accept_multiple_files=True,
             key="overview_empty_uploader",
             label_visibility="collapsed"
         )
-        if empty_upload is not None:
-            with st.spinner(f"Ingesting & analyzing {empty_upload.name}..."):
-                res = load_single_dataset(empty_upload, empty_upload.name, set_as_active=True)
-            if res.get("status") == "success":
+        if empty_uploads:
+            btn_label = f"Process & Analyze {len(empty_uploads)} Uploaded File{'s' if len(empty_uploads) > 1 else ''}"
+            if st.button(btn_label, type="primary", use_container_width=True, key="overview_empty_process_btn"):
+                progress_container = st.empty()
+                progress_bar = st.progress(0.0)
+                
+                stage_weights = {
+                    "Loading": 0.12,
+                    "Type Detection": 0.22,
+                    "Cleaning": 0.35,
+                    "Statistics": 0.48,
+                    "Correlation": 0.58,
+                    "Anomalies": 0.72,
+                    "Clustering": 0.86,
+                    "Insights": 0.95,
+                    "Completed": 1.0
+                }
+
+                def ui_overview_progress_callback(file_idx: int, total_files: int, filename: str, stage_name: str, status: str, elapsed: float):
+                    stage_frac = stage_weights.get(stage_name, 0.5)
+                    overall_progress = ((file_idx - 1) + stage_frac) / max(1, total_files)
+                    progress_bar.progress(min(1.0, max(0.0, overall_progress)))
+                    
+                    status_text = f"Currently analyzing: <strong>{filename}</strong>"
+                    stage_text = f"Stage: <strong>{stage_name}</strong>" + (f" ({elapsed:.1f}s)" if elapsed > 0 else "")
+                    
+                    progress_container.markdown(
+                        f"""
+                        <div class="batch-status-card" style="margin-top: 0.8rem; border-left: 3px solid #2563EB;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; color: #111111; font-size: 0.9rem;">Processing File {file_idx}/{total_files}</span>
+                                <span class="pill-badge blue">ACTIVE</span>
+                            </div>
+                            <div style="margin-top: 4px; font-size: 0.85rem; color: #2563EB; font-weight: 600;">
+                                {status_text}
+                            </div>
+                            <div style="font-size: 0.78rem; color: #6B7280; margin-top: 2px;">
+                                {stage_text}
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                updated_datasets, logs = BatchManager.process_batch(
+                    empty_uploads,
+                    existing_datasets=st.session_state.datasets,
+                    remove_duplicates=st.session_state.remove_duplicates,
+                    progress_callback=ui_overview_progress_callback
+                )
+                st.session_state.datasets = updated_datasets
+                st.session_state.batch_processing_logs = logs
+
+                for log in reversed(logs):
+                    if log["status"] == "success":
+                        set_active_dataset(log["id"])
+                        break
+
+                progress_bar.empty()
+                progress_container.empty()
                 st.rerun()
-            else:
-                st.error(res.get("message", "Error processing uploaded file."))
         st.stop()
 
     active_ds = st.session_state.datasets[st.session_state.active_dataset_id]
