@@ -487,8 +487,8 @@ class DataQAEngine:
         )
         system_prompt = RAGEngine.get_system_prompt(filename)
         user_prompt = (
-            f"DATASET CONTEXT:\n{grounded_context}\n\n"
-            f"USER QUESTION: {query}\n\n"
+            f"{grounded_context}\n\n"
+            f"<user_question>\n{query}\n</user_question>\n\n"
             "Please provide a natural, concise explanation (2-3 sentences) of this verified calculation. "
             "Do not invent any numbers. Always ground your explanation in the verified figures."
         )
