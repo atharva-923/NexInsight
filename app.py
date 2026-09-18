@@ -123,14 +123,11 @@ def load_single_dataset(file_obj, filename: str, set_as_active: bool = True) -> 
     return res
 
 
-# Automatically load default Dataset A if no datasets loaded yet
-if not st.session_state.datasets:
-    default_path = os.path.join("test_datasets", "dataset_a_sales.csv")
-    if os.path.exists(default_path):
-        load_single_dataset(default_path, "dataset_a_sales.csv", set_as_active=True)
-elif st.session_state.active_dataset_id is None or st.session_state.active_dataset_id not in st.session_state.datasets:
-    first_id = list(st.session_state.datasets.keys())[0]
-    set_active_dataset(first_id)
+# Synchronize active dataset if datasets are loaded
+if st.session_state.datasets:
+    if st.session_state.active_dataset_id is None or st.session_state.active_dataset_id not in st.session_state.datasets:
+        first_id = list(st.session_state.datasets.keys())[0]
+        set_active_dataset(first_id)
 
 
 # ==============================================================================
@@ -206,6 +203,8 @@ with st.sidebar.expander("Developer / Test Benchmarks", expanded=False):
             with st.spinner("Processing dataset..."):
                 res = load_single_dataset(target_path, filename, set_as_active=True)
             st.rerun()
+        else:
+            st.warning(f"Benchmark file not found: {target_path}")
 
 # Sidebar Active Scope Box
 if st.session_state.active_dataset_id and st.session_state.active_dataset_id in st.session_state.datasets:
@@ -243,11 +242,27 @@ active_ds = st.session_state.datasets.get(st.session_state.active_dataset_id, {}
 active_display_name = active_ds.get("filename", "No Dataset Loaded")
 h_top = active_ds.get("health_metrics", {})
 clean_df_top = active_ds.get("cleaned_df")
-row_meta = f"{len(clean_df_top):,} rows" if clean_df_top is not None else "0 rows"
-col_meta = f"{len(clean_df_top.columns)} attrs" if clean_df_top is not None else "0 attrs"
-health_score_val = h_top.get("score", 100) if h_top else 100
 
 batch_pill = f'<div class="dataset-meta-pill"><span style="color: #6B7280;">{len(st.session_state.datasets)} Datasets</span></div>' if len(st.session_state.datasets) > 1 else ''
+
+if active_ds and clean_df_top is not None:
+    row_meta = f"{len(clean_df_top):,} rows"
+    col_meta = f"{len(clean_df_top.columns)} attrs"
+    health_score_val = h_top.get("score", 100)
+    active_pill_html = (
+        f'<div class="dataset-meta-pill">'
+        f'<span class="live-dot"></span>'
+        f'<span>Active: <strong style="color: #111111;">{active_display_name}</strong></span>'
+        f'<span style="color: #CBD5E1;">·</span>'
+        f'<span>{row_meta}</span>'
+        f'<span style="color: #CBD5E1;">·</span>'
+        f'<span>{col_meta}</span>'
+        f'<span style="color: #CBD5E1;">·</span>'
+        f'<span class="pill-badge green">{health_score_val}/100</span>'
+        f'</div>'
+    )
+else:
+    active_pill_html = '<div class="dataset-meta-pill"><span style="color: #6B7280;">No Dataset Loaded</span></div>'
 
 st.markdown(
     f"""
@@ -256,16 +271,7 @@ st.markdown(
             <h1 class="overview-heading">{nav_page}</h1>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-            <div class="dataset-meta-pill">
-                <span class="live-dot"></span>
-                <span>Active: <strong style="color: #111111;">{active_display_name}</strong></span>
-                <span style="color: #CBD5E1;">·</span>
-                <span>{row_meta}</span>
-                <span style="color: #CBD5E1;">·</span>
-                <span>{col_meta}</span>
-                <span style="color: #CBD5E1;">·</span>
-                <span class="pill-badge green">{health_score_val}/100</span>
-            </div>
+            {active_pill_html}
             {batch_pill}
         </div>
     </div>
@@ -279,7 +285,20 @@ st.markdown(
 # ==============================================================================
 if nav_page == "Overview":
     if not st.session_state.datasets or not st.session_state.active_dataset_id:
-        st.warning("Please upload or select a dataset to begin.")
+        st.info("No dataset is currently loaded. Upload a CSV or Excel file below or navigate to the **Datasets** tab to begin autonomous analysis.")
+        empty_upload = st.file_uploader(
+            "Upload CSV or Excel file to begin",
+            type=["csv", "xlsx", "xls"],
+            key="overview_empty_uploader",
+            label_visibility="collapsed"
+        )
+        if empty_upload is not None:
+            with st.spinner(f"Ingesting & analyzing {empty_upload.name}..."):
+                res = load_single_dataset(empty_upload, empty_upload.name, set_as_active=True)
+            if res.get("status") == "success":
+                st.rerun()
+            else:
+                st.error(res.get("message", "Error processing uploaded file."))
         st.stop()
 
     active_ds = st.session_state.datasets[st.session_state.active_dataset_id]
