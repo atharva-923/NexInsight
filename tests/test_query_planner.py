@@ -165,16 +165,66 @@ def test_complex_query_routing_and_ground_truth(mock_llm, mock_planner, qa_engin
 
 @patch("core.query_planner.QueryPlanner.generate_plan")
 @patch("core.llm_client.LLMClient.generate_chat_completion")
-def test_planner_api_failure_does_not_crash(mock_llm, mock_planner, qa_engine):
+def test_planner_failure_returns_controlled_response(mock_llm, mock_planner, qa_engine):
     # Simulate API failure during planning
     mock_planner.return_value = {"success": False, "error": "API Timeout"}
     mock_llm.return_value = {"success": True, "content": "mocked", "model": "mock"}
     
     with patch("core.llm_client.LLMClient.is_configured", return_value=True):
-        # Query Engine should seamlessly fallback to deterministic compute
+        # Query Engine should return a controlled failure, NOT fall back to deterministic
         res = qa_engine.answer_query("compare the top region and filter anomalies")
-        assert res["metric_highlight"] != "Complex Analysis Executed"
-        assert res["engine"] != "fallback" # Because LLM fallback only applies if final LLM fails, here planner failed and it fell back to deterministic QA which still uses RAG. Wait, actually if deterministic is used, it still sends it to RAG!
+        assert res["metric_highlight"] == "Query Planning Failed"
+        assert "planner failed" in res["answer"].lower()
+
+@patch("core.query_planner.QueryPlanner.generate_plan")
+@patch("core.llm_client.LLMClient.generate_chat_completion")
+def test_planner_execution_failure_returns_controlled_response(mock_llm, mock_planner, qa_engine):
+    # Simulate execution failure
+    mock_planner.return_value = {
+        "success": True, 
+        "plan": {"pipeline": [{"operation": "sort", "column": "missing_col", "order": "ascending"}]}
+    }
+    mock_llm.return_value = {"success": True, "content": "mocked", "model": "mock"}
+    
+    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
+        res = qa_engine.answer_query("compare the top region and filter anomalies")
+        assert res["metric_highlight"] == "Query Execution Failed"
+        assert "could not be safely executed" in res["answer"].lower()
+
+def test_missing_required_filter_field_rejected(sample_df):
+    executor = SafeQueryExecutor(sample_df, {})
+    pipeline = [{"operation": "filter", "column": "region", "operator": "=="}] # missing value
+    with pytest.raises(ValueError, match="Filter step missing required fields."):
+        executor.execute_pipeline(pipeline)
+
+def test_invalid_sort_order_rejected(sample_df):
+    executor = SafeQueryExecutor(sample_df, {})
+    pipeline = [{"operation": "sort", "column": "region", "order": "random_order"}]
+    with pytest.raises(ValueError, match="Invalid schema: Sort order must be"):
+        executor.execute_pipeline(pipeline)
+
+def test_empty_group_by_rejected(sample_df):
+    executor = SafeQueryExecutor(sample_df, {})
+    pipeline = [{"operation": "group_aggregate", "group_by": [], "aggregations": [{"column": "sales", "metric": "sum"}]}]
+    with pytest.raises(ValueError, match="Invalid schema: 'group_aggregate' requires a non-empty group_by list."):
+        executor.execute_pipeline(pipeline)
+
+def test_large_result_capped(qa_engine):
+    # Setup a large dataframe
+    qa_engine.df = pd.DataFrame({"sales": range(100)})
+    qa_engine.column_types = {"sales": "Numeric"}
+    
+    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
+        with patch("core.query_planner.QueryPlanner.generate_plan") as mock_planner:
+            mock_planner.return_value = {
+                "success": True, 
+                "plan": {"pipeline": [{"operation": "aggregate", "aggregations": [{"column": "sales", "metric": "count"}]}]}
+            }
+            # Instead of executing aggregate properly across 100 rows, let's just make the executor return the 100 rows 
+            # to simulate a large result set
+            with patch.object(SafeQueryExecutor, "execute_pipeline", return_value=qa_engine.df):
+                res = qa_engine.answer_query("compare filter large result")
+                assert "first 50 rows are included here for brevity" in res["answer"]
         # Thus the final answer uses Groq.
 
 def test_simple_question_uses_deterministic_fast_path(qa_engine):
