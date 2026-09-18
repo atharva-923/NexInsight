@@ -457,13 +457,14 @@ class DataQAEngine:
             return True
             
         # Conjunctions implying multi-step
-        words = q.split()
+        import re
+        words = re.findall(r'\b\w+\b', q)
         if "and" in words:
             return True
 
         # Multiple analytical operations in one sentence
-        analysis_words = ["average", "mean", "sum", "total", "max", "highest", "min", "lowest", "anomaly", "anomalies", "outlier", "correlation", "count"]
-        hits = sum(1 for w in analysis_words if w in q)
+        analysis_words = {"average", "mean", "sum", "total", "max", "highest", "min", "lowest", "anomaly", "anomalies", "outlier", "correlation", "count"}
+        hits = sum(1 for w in analysis_words if w in words)
         if hits >= 2:
             return True
             
@@ -530,21 +531,29 @@ class DataQAEngine:
                         }
                     except Exception as e:
                         # Execution failed
-                        deterministic_res = {
+                        return {
                             "query": query,
                             "answer": f"The complex multi-step query could not be safely executed. Reason: {str(e)}. Please try rephrasing or simplifying your question.",
                             "metric_highlight": "Query Execution Failed",
                             "figure": None,
-                            "data_slice": None
+                            "data_slice": None,
+                            "engine": "fallback",
+                            "model": "NexInsight Safe Executor",
+                            "fallback_message": "Execution failure",
+                            "error": str(e)
                         }
                 else:
                     # Planner failed
-                    deterministic_res = {
+                    return {
                         "query": query,
                         "answer": f"The query planner failed to generate a safe execution plan. Reason: {plan_resp.get('error')}. Please try rephrasing or simplifying your question.",
                         "metric_highlight": "Query Planning Failed",
                         "figure": None,
-                        "data_slice": None
+                        "data_slice": None,
+                        "engine": "fallback",
+                        "model": "NexInsight Query Planner",
+                        "fallback_message": "Planning failure",
+                        "error": plan_resp.get('error')
                     }
         
         # If query is simple, use Deterministic Path

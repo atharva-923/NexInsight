@@ -119,12 +119,8 @@ def test_df_query_payload_rejected(sample_df):
 def test_malicious_planner_output_rejected(mock_gen, sample_df):
     mock_gen.return_value = {"success": True, "content": '{"pipeline": [{"operation": "eval", "code": "exit()"}]}'}
     resp = QueryPlanner.generate_plan("Do something bad", list(sample_df.columns))
-    assert resp["success"] == True
-    
-    # SafeQueryExecutor catches it
-    executor = SafeQueryExecutor(sample_df, {})
-    with pytest.raises(ValueError, match="Unknown operation 'eval'"):
-        executor.execute_pipeline(resp["plan"]["pipeline"])
+    assert resp["success"] == False
+    assert "Unknown operation 'eval'" in resp["error"]
 
 @patch("core.anomalies.AnomalyDetector.get_comprehensive_anomalies")
 def test_anomaly_grouping_uses_existing_logic(mock_anomalies, sample_df):
