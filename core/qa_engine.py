@@ -15,6 +15,8 @@ import plotly.graph_objects as go
 from core.visualizer import Visualizer
 from core.llm_client import LLMClient, GrokClient
 from core.rag_engine import RAGEngine, RAGRetriever
+from core.query_planner import QueryPlanner
+from core.safe_executor import SafeQueryExecutor
 
 
 class DataQAEngine:
@@ -446,6 +448,27 @@ class DataQAEngine:
             "data_slice": None
         }
 
+    def _is_complex_query(self, query: str) -> bool:
+        """Lightweight heuristic to determine if a query requires the restricted planner."""
+        q = query.lower()
+        
+        # Explicit complex intent words
+        if "compare" in q or " vs " in q or "filter" in q or "group by" in q:
+            return True
+            
+        # Conjunctions implying multi-step
+        words = q.split()
+        if "and" in words:
+            return True
+
+        # Multiple analytical operations in one sentence
+        analysis_words = ["average", "mean", "sum", "total", "max", "highest", "min", "lowest", "anomaly", "anomalies", "outlier", "correlation", "count"]
+        hits = sum(1 for w in analysis_words if w in q)
+        if hits >= 2:
+            return True
+            
+        return False
+
     def answer_query(
         self,
         query: str,
@@ -460,9 +483,42 @@ class DataQAEngine:
         3. If Groq API is configured, prompt Groq for natural-language synthesis of verified results.
         4. If Groq is unavailable, fall back seamlessly to local deterministic engine without crashing.
         """
-        # 1. Deterministic Python calculation
-        deterministic_res = self.compute_deterministic_answer(query)
+        # 1. Routing: Check if Groq API is available and query is complex
         filename = self.dataset_record.get("filename", "active_dataset.csv")
+        deterministic_res = None
+        is_complex = self._is_complex_query(query)
+
+        if is_complex and LLMClient.is_configured(api_key):
+            # Complex Path
+            plan_resp = QueryPlanner.generate_plan(query, list(self.df.columns), api_key, model)
+            if plan_resp["success"]:
+                executor = SafeQueryExecutor(self.df, self.column_types)
+                try:
+                    final_df = executor.execute_pipeline(plan_resp["plan"]["pipeline"])
+                    
+                    # Convert result to VERIFIED PYTHON GROUND TRUTH string
+                    result_md = final_df.to_string(index=False)
+                    answer_str = (
+                        f"VERIFIED PYTHON GROUND TRUTH\n"
+                        f"CALCULATED VIA PANDAS\n\n"
+                        f"Operation: Complex multi-step analysis\n"
+                        f"Result:\n{result_md}"
+                    )
+                    
+                    deterministic_res = {
+                        "query": query,
+                        "answer": answer_str,
+                        "metric_highlight": "Complex Analysis Executed",
+                        "figure": None,
+                        "data_slice": final_df.head(10) if not final_df.empty else None
+                    }
+                except Exception as e:
+                    # Execution failed, fallback to deterministic
+                    pass
+        
+        # If complex path failed, skipped, or query is simple, use Deterministic Path
+        if not deterministic_res:
+            deterministic_res = self.compute_deterministic_answer(query)
 
         # 2. Check if Groq API is configured
         if not LLMClient.is_configured(api_key):
