@@ -83,23 +83,35 @@ class SafeQueryExecutor:
         return df
 
     def _apply_group_aggregate(self, df: pd.DataFrame, step: Dict[str, Any]) -> pd.DataFrame:
-        group_by = step.get("group_by", [])
-        if not isinstance(group_by, list):
-            group_by = [group_by]
+        group_by = step.get("group_by")
+        if not group_by or not isinstance(group_by, list):
+            raise ValueError("Invalid schema: 'group_aggregate' requires a non-empty group_by list.")
             
         if len(group_by) > 3:
             raise ValueError("Security constraint violated: group_by exceeds 3 columns limit.")
             
         self._validate_columns(df, group_by)
 
-        aggregations = step.get("aggregations", [])
+        aggregations = step.get("aggregations")
+        if not aggregations or not isinstance(aggregations, list):
+            raise ValueError("Invalid schema: 'group_aggregate' requires a non-empty aggregations list.")
+            
         agg_dict = {}
         rename_dict = {}
 
         for agg in aggregations:
+            if not isinstance(agg, dict):
+                raise ValueError("Invalid schema: Aggregation must be a dictionary.")
             col = agg.get("column")
             metric = agg.get("metric")
-            out_name = agg.get("output_name", f"{col}_{metric}")
+            if not col or not metric:
+                raise ValueError("Invalid schema: Aggregation requires column and metric.")
+                
+            out_name = agg.get("output_name")
+            if out_name is not None and (not isinstance(out_name, str) or not out_name.strip()):
+                raise ValueError("Invalid schema: output_name must be a non-empty string if provided.")
+            if not out_name:
+                out_name = f"{col}_{metric}"
             
             if metric not in self.ALLOWED_METRICS:
                 raise ValueError(f"Security constraint violated: Unknown metric '{metric}'")
@@ -127,13 +139,25 @@ class SafeQueryExecutor:
         return grouped
 
     def _apply_aggregate(self, df: pd.DataFrame, step: Dict[str, Any]) -> pd.DataFrame:
-        aggregations = step.get("aggregations", [])
+        aggregations = step.get("aggregations")
+        if not aggregations or not isinstance(aggregations, list):
+            raise ValueError("Invalid schema: 'aggregate' requires a non-empty aggregations list.")
+            
         result = {}
 
         for agg in aggregations:
+            if not isinstance(agg, dict):
+                raise ValueError("Invalid schema: Aggregation must be a dictionary.")
             col = agg.get("column")
             metric = agg.get("metric")
-            out_name = agg.get("output_name", f"{col}_{metric}")
+            if not col or not metric:
+                raise ValueError("Invalid schema: Aggregation requires column and metric.")
+                
+            out_name = agg.get("output_name")
+            if out_name is not None and (not isinstance(out_name, str) or not out_name.strip()):
+                raise ValueError("Invalid schema: output_name must be a non-empty string if provided.")
+            if not out_name:
+                out_name = f"{col}_{metric}"
             
             if metric not in self.ALLOWED_METRICS:
                 raise ValueError(f"Security constraint violated: Unknown metric '{metric}'")
@@ -159,9 +183,12 @@ class SafeQueryExecutor:
         
         if not col:
             raise ValueError("Sort missing column.")
+        if order not in ["ascending", "descending"]:
+            raise ValueError(f"Invalid schema: Sort order must be 'ascending' or 'descending', got '{order}'.")
+            
         self._validate_columns(df, [col])
         
-        ascending = order.lower() == "ascending"
+        ascending = order == "ascending"
         return df.sort_values(by=col, ascending=ascending)
 
     def _apply_limit(self, df: pd.DataFrame, step: Dict[str, Any]) -> pd.DataFrame:

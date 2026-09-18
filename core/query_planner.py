@@ -81,11 +81,39 @@ Only output the raw JSON object.
             plan = json.loads(content)
             
             # Basic structural validation
-            if "pipeline" not in plan or not isinstance(plan["pipeline"], list):
-                return {"success": False, "error": "Invalid schema: Missing 'pipeline' array."}
+            if not isinstance(plan, dict):
+                return {"success": False, "error": "Invalid schema: Root must be a dictionary."}
+            
+            pipeline = plan.get("pipeline")
+            if pipeline is None or not isinstance(pipeline, list):
+                return {"success": False, "error": "Invalid schema: Missing or invalid 'pipeline' array."}
                 
-            if len(plan["pipeline"]) > 8:
+            if len(pipeline) > 8:
                 return {"success": False, "error": "Security constraint violated: Pipeline exceeds 8 steps."}
+
+            allowed_ops = {"filter", "group_aggregate", "aggregate", "sort", "limit", "calculate_anomaly"}
+            
+            for step in pipeline:
+                if not isinstance(step, dict):
+                    return {"success": False, "error": "Invalid schema: Pipeline step must be a dictionary."}
+                
+                op = step.get("operation")
+                if op not in allowed_ops:
+                    return {"success": False, "error": f"Security constraint violated: Unknown operation '{op}'"}
+                    
+                # Basic required field checks for planner validation
+                if op == "filter":
+                    if not all(k in step for k in ["column", "operator", "value"]):
+                        return {"success": False, "error": f"Invalid schema: 'filter' requires column, operator, and value."}
+                elif op in ["group_aggregate", "aggregate"]:
+                    if "aggregations" not in step or not isinstance(step["aggregations"], list):
+                        return {"success": False, "error": f"Invalid schema: '{op}' requires aggregations list."}
+                elif op == "sort":
+                    if "column" not in step:
+                        return {"success": False, "error": "Invalid schema: 'sort' requires column."}
+                elif op == "limit":
+                    if "value" not in step:
+                        return {"success": False, "error": "Invalid schema: 'limit' requires value."}
 
             return {"success": True, "plan": plan}
 

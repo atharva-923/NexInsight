@@ -488,36 +488,67 @@ class DataQAEngine:
         deterministic_res = None
         is_complex = self._is_complex_query(query)
 
-        if is_complex and LLMClient.is_configured(api_key):
-            # Complex Path
-            plan_resp = QueryPlanner.generate_plan(query, list(self.df.columns), api_key, model)
-            if plan_resp["success"]:
-                executor = SafeQueryExecutor(self.df, self.column_types)
-                try:
-                    final_df = executor.execute_pipeline(plan_resp["plan"]["pipeline"])
-                    
-                    # Convert result to VERIFIED PYTHON GROUND TRUTH string
-                    result_md = final_df.to_string(index=False)
-                    answer_str = (
-                        f"VERIFIED PYTHON GROUND TRUTH\n"
-                        f"CALCULATED VIA PANDAS\n\n"
-                        f"Operation: Complex multi-step analysis\n"
-                        f"Result:\n{result_md}"
-                    )
-                    
+        if is_complex:
+            if not LLMClient.is_configured(api_key):
+                # Cannot execute complex query without LLM
+                deterministic_res = {
+                    "query": query,
+                    "answer": "This is a complex query requiring multi-step analysis, but the AI Analyst is not configured. Please configure an API key to use advanced analytical planning.",
+                    "metric_highlight": "Configuration Required",
+                    "figure": None,
+                    "data_slice": None
+                }
+            else:
+                # Complex Path
+                plan_resp = QueryPlanner.generate_plan(query, list(self.df.columns), api_key, model)
+                if plan_resp["success"]:
+                    executor = SafeQueryExecutor(self.df, self.column_types)
+                    try:
+                        final_df = executor.execute_pipeline(plan_resp["plan"]["pipeline"])
+                        
+                        # Convert result to VERIFIED PYTHON GROUND TRUTH string
+                        if len(final_df) > 50:
+                            context_df = final_df.head(50)
+                            result_md = context_df.to_string(index=False)
+                            result_md += f"\n\n... (Note: The calculation was performed on the full dataset, but only the first 50 rows are included here for brevity.)"
+                        else:
+                            result_md = final_df.to_string(index=False)
+                            
+                        answer_str = (
+                            f"VERIFIED PYTHON GROUND TRUTH\n"
+                            f"CALCULATED VIA PANDAS\n\n"
+                            f"Operation: Complex multi-step analysis\n"
+                            f"Result:\n{result_md}"
+                        )
+                        
+                        deterministic_res = {
+                            "query": query,
+                            "answer": answer_str,
+                            "metric_highlight": "Complex Analysis Executed",
+                            "figure": None,
+                            "data_slice": final_df.head(10) if not final_df.empty else None
+                        }
+                    except Exception as e:
+                        # Execution failed
+                        deterministic_res = {
+                            "query": query,
+                            "answer": f"The complex multi-step query could not be safely executed. Reason: {str(e)}. Please try rephrasing or simplifying your question.",
+                            "metric_highlight": "Query Execution Failed",
+                            "figure": None,
+                            "data_slice": None
+                        }
+                else:
+                    # Planner failed
                     deterministic_res = {
                         "query": query,
-                        "answer": answer_str,
-                        "metric_highlight": "Complex Analysis Executed",
+                        "answer": f"The query planner failed to generate a safe execution plan. Reason: {plan_resp.get('error')}. Please try rephrasing or simplifying your question.",
+                        "metric_highlight": "Query Planning Failed",
                         "figure": None,
-                        "data_slice": final_df.head(10) if not final_df.empty else None
+                        "data_slice": None
                     }
-                except Exception as e:
-                    # Execution failed, fallback to deterministic
-                    pass
         
-        # If complex path failed, skipped, or query is simple, use Deterministic Path
-        if not deterministic_res:
+        # If query is simple, use Deterministic Path
+        else:
             deterministic_res = self.compute_deterministic_answer(query)
 
         # 2. Check if Groq API is configured
