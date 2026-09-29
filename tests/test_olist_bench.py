@@ -4,10 +4,10 @@ import time
 import glob
 import pandas as pd
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from core.data_processor import DataProcessor
-from core.analyzer import DataAnalyzer
-from core.anomalies import AnomalyDetector
-from core.insights import InsightEngine
+from backend.data_processor import DataProcessor
+from backend.analyzer import DataAnalyzer
+from backend.anomalies import AnomalyDetector
+from backend.insights import InsightEngine
 
 data_dir = r"C:\Users\Atharva\OneDrive\Desktop\Projects\crate\server\csv-data"
 csv_files = sorted(glob.glob(os.path.join(data_dir, "*.csv")))

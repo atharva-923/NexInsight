@@ -12,11 +12,11 @@ import numpy as np
 from typing import Dict, Any, Optional, Tuple, List
 import plotly.express as px
 import plotly.graph_objects as go
-from core.visualizer import Visualizer
-from core.llm_client import LLMClient
-from core.rag_engine import RAGEngine
-from core.query_planner import QueryPlanner
-from core.safe_executor import SafeQueryExecutor
+from backend.visualizer import Visualizer
+from backend.llm_client import LLMClient
+from backend.rag_engine import RAGEngine
+from backend.query_planner import QueryPlanner
+from backend.safe_executor import SafeQueryExecutor
 
 
 class DataQAEngine:

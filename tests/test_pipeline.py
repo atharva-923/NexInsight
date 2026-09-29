@@ -20,12 +20,12 @@ from tests.fixtures import (
     make_dataset_a, make_dataset_b, make_dataset_c,
     make_dataset_d, make_dataset_e, write_csv,
 )
-from core.data_processor import DataProcessor
-from core.analyzer import DataAnalyzer
-from core.visualizer import Visualizer
-from core.insights import InsightEngine
-from core.anomalies import AnomalyDetector
-from core.qa_engine import DataQAEngine
+from backend.data_processor import DataProcessor
+from backend.analyzer import DataAnalyzer
+from backend.visualizer import Visualizer
+from backend.insights import InsightEngine
+from backend.anomalies import AnomalyDetector
+from backend.qa_engine import DataQAEngine
 
 
 class TestNexInsightPipeline(unittest.TestCase):

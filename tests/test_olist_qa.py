@@ -9,9 +9,9 @@ except Exception:
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from core.batch_manager import BatchManager
-from core.qa_engine import DataQAEngine
-from core.rag_retriever import RAGRetriever
+from backend.batch_manager import BatchManager
+from backend.qa_engine import DataQAEngine
+from backend.rag_retriever import RAGRetriever
 
 class TestOlistQA(unittest.TestCase):
 

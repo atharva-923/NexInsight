@@ -11,10 +11,10 @@ import time
 import uuid
 import pandas as pd
 from typing import Dict, Any, List, Tuple, Optional, Callable
-from core.data_processor import DataProcessor
-from core.analyzer import DataAnalyzer
-from core.anomalies import AnomalyDetector
-from core.insights import InsightEngine
+from backend.data_processor import DataProcessor
+from backend.analyzer import DataAnalyzer
+from backend.anomalies import AnomalyDetector
+from backend.insights import InsightEngine
 
 
 class BatchManager:

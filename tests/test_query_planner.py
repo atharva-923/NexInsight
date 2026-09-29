@@ -1,9 +1,9 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch
-from core.query_planner import QueryPlanner
-from core.safe_executor import SafeQueryExecutor
-from core.qa_engine import DataQAEngine
+from backend.query_planner import QueryPlanner
+from backend.safe_executor import SafeQueryExecutor
+from backend.qa_engine import DataQAEngine
 
 @pytest.fixture
 def sample_df():
@@ -115,14 +115,14 @@ def test_df_query_payload_rejected(sample_df):
     with pytest.raises(ValueError, match="Security constraint violated: Unknown operation 'query'"):
         executor.execute_pipeline(pipeline)
 
-@patch("core.llm_client.LLMClient.generate_chat_completion")
+@patch("backend.llm_client.LLMClient.generate_chat_completion")
 def test_malicious_planner_output_rejected(mock_gen, sample_df):
     mock_gen.return_value = {"success": True, "content": '{"pipeline": [{"operation": "eval", "code": "exit()"}]}'}
     resp = QueryPlanner.generate_plan("Do something bad", list(sample_df.columns))
     assert resp["success"] == False
     assert "Unknown operation 'eval'" in resp["error"]
 
-@patch("core.anomalies.AnomalyDetector.get_comprehensive_anomalies")
+@patch("backend.anomalies.AnomalyDetector.get_comprehensive_anomalies")
 def test_anomaly_grouping_uses_existing_logic(mock_anomalies, sample_df):
     # Mock the return of the anomaly engine
     mock_anomalies.return_value = {
@@ -139,8 +139,8 @@ def test_anomaly_grouping_uses_existing_logic(mock_anomalies, sample_df):
     assert res.iloc[0]["value"] == 1000
     mock_anomalies.assert_called_once()
 
-@patch("core.query_planner.QueryPlanner.generate_plan")
-@patch("core.llm_client.LLMClient.generate_chat_completion")
+@patch("backend.query_planner.QueryPlanner.generate_plan")
+@patch("backend.llm_client.LLMClient.generate_chat_completion")
 def test_complex_query_routing_and_ground_truth(mock_llm, mock_planner, qa_engine):
     # Setup mock to simulate a successful plan and RAG response
     mock_planner.return_value = {
@@ -149,7 +149,7 @@ def test_complex_query_routing_and_ground_truth(mock_llm, mock_planner, qa_engin
     }
     mock_llm.return_value = {"success": True, "content": "The top result is here.", "model": "mock"}
     
-    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
+    with patch("backend.llm_client.LLMClient.is_configured", return_value=True):
         res = qa_engine.answer_query("compare the top region and filter anomalies")
         
         # It should route to complex path since "compare" and "filter" are in the query
@@ -159,21 +159,21 @@ def test_complex_query_routing_and_ground_truth(mock_llm, mock_planner, qa_engin
         assert res["fallback_message"] is None
         assert res["metric_highlight"] == "Complex Analysis Executed"
 
-@patch("core.query_planner.QueryPlanner.generate_plan")
-@patch("core.llm_client.LLMClient.generate_chat_completion")
+@patch("backend.query_planner.QueryPlanner.generate_plan")
+@patch("backend.llm_client.LLMClient.generate_chat_completion")
 def test_planner_failure_returns_controlled_response(mock_llm, mock_planner, qa_engine):
     # Simulate API failure during planning
     mock_planner.return_value = {"success": False, "error": "API Timeout"}
     mock_llm.return_value = {"success": True, "content": "mocked", "model": "mock"}
     
-    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
+    with patch("backend.llm_client.LLMClient.is_configured", return_value=True):
         # Query Engine should return a controlled failure, NOT fall back to deterministic
         res = qa_engine.answer_query("compare the top region and filter anomalies")
         assert res["metric_highlight"] == "Query Planning Failed"
         assert "planner failed" in res["answer"].lower()
 
-@patch("core.query_planner.QueryPlanner.generate_plan")
-@patch("core.llm_client.LLMClient.generate_chat_completion")
+@patch("backend.query_planner.QueryPlanner.generate_plan")
+@patch("backend.llm_client.LLMClient.generate_chat_completion")
 def test_planner_execution_failure_returns_controlled_response(mock_llm, mock_planner, qa_engine):
     # Simulate execution failure
     mock_planner.return_value = {
@@ -182,7 +182,7 @@ def test_planner_execution_failure_returns_controlled_response(mock_llm, mock_pl
     }
     mock_llm.return_value = {"success": True, "content": "mocked", "model": "mock"}
     
-    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
+    with patch("backend.llm_client.LLMClient.is_configured", return_value=True):
         res = qa_engine.answer_query("compare the top region and filter anomalies")
         assert res["metric_highlight"] == "Query Execution Failed"
         assert "could not be safely executed" in res["answer"].lower()
@@ -210,8 +210,8 @@ def test_large_result_capped(qa_engine):
     qa_engine.df = pd.DataFrame({"sales": range(100)})
     qa_engine.column_types = {"sales": "Numeric"}
     
-    with patch("core.llm_client.LLMClient.is_configured", return_value=True):
-        with patch("core.query_planner.QueryPlanner.generate_plan") as mock_planner:
+    with patch("backend.llm_client.LLMClient.is_configured", return_value=True):
+        with patch("backend.query_planner.QueryPlanner.generate_plan") as mock_planner:
             mock_planner.return_value = {
                 "success": True, 
                 "plan": {"pipeline": [{"operation": "aggregate", "aggregations": [{"column": "sales", "metric": "count"}]}]}
@@ -225,9 +225,9 @@ def test_large_result_capped(qa_engine):
 
 def test_simple_question_uses_deterministic_fast_path(qa_engine):
     # "What is the highest sales" is simple enough
-    with patch("core.query_planner.QueryPlanner.generate_plan") as mock_planner:
-        with patch("core.llm_client.LLMClient.is_configured", return_value=True):
-            with patch("core.llm_client.LLMClient.generate_chat_completion", return_value={"success": True, "content": "Highest is 400", "model": "mock"}):
+    with patch("backend.query_planner.QueryPlanner.generate_plan") as mock_planner:
+        with patch("backend.llm_client.LLMClient.is_configured", return_value=True):
+            with patch("backend.llm_client.LLMClient.generate_chat_completion", return_value={"success": True, "content": "Highest is 400", "model": "mock"}):
                 qa_engine.answer_query("What is the highest sales?")
                 # Planner should NOT be called for simple queries
                 assert not mock_planner.called

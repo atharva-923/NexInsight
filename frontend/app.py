@@ -20,16 +20,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Load core modules
-from core.data_processor import DataProcessor
-from core.analyzer import DataAnalyzer
-from core.visualizer import Visualizer
-from core.insights import InsightEngine
-from core.anomalies import AnomalyDetector
-from core.qa_engine import DataQAEngine
-from core.batch_manager import BatchManager
-from core.llm_client import LLMClient, GrokClient
-from core.rag_engine import RAGEngine, RAGRetriever
+from backend.data_processor import DataProcessor
+from backend.analyzer import DataAnalyzer
+from backend.visualizer import Visualizer
+from backend.insights import InsightEngine
+from backend.anomalies import AnomalyDetector
+from backend.qa_engine import DataQAEngine
+from backend.batch_manager import BatchManager
+from backend.llm_client import LLMClient, GrokClient
+from backend.rag_engine import RAGEngine, RAGRetriever
 
 # Load custom CSS
 def load_css():

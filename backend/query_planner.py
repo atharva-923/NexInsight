@@ -1,6 +1,6 @@
 import json
 from typing import Dict, Any, List, Optional
-from core.llm_client import LLMClient
+from backend.llm_client import LLMClient
 
 class QueryPlanner:
     """

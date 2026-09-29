@@ -3,7 +3,7 @@ NexInsight - RAG Retriever Compatibility Layer
 Provides backwards-compatible RAGRetriever interface mapped to core.rag_engine.RAGEngine.
 """
 
-from core.rag_engine import RAGEngine
+from backend.rag_engine import RAGEngine
 
 # Alias RAGRetriever to RAGEngine for seamless backward compatibility
 class RAGRetriever(RAGEngine):

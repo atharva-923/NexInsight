@@ -28,8 +28,8 @@ from tests.fixtures import (
     make_dataset_d, make_dataset_e, make_batch_xlsx,
     write_csv, write_xlsx, write_corrupt_xlsx, write_empty_csv,
 )
-from core.batch_manager import BatchManager
-from core.qa_engine import DataQAEngine
+from backend.batch_manager import BatchManager
+from backend.qa_engine import DataQAEngine
 
 
 class TestBatchUpload(unittest.TestCase):

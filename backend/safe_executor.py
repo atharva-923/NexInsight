@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Dict, Any, List
-from core.anomalies import AnomalyDetector
+from backend.anomalies import AnomalyDetector
 
 class SafeQueryExecutor:
     """

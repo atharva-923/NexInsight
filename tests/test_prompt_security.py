@@ -2,8 +2,8 @@ import pytest
 import pandas as pd
 import re
 from unittest.mock import patch
-from core.qa_engine import DataQAEngine
-from core.rag_engine import RAGEngine
+from backend.qa_engine import DataQAEngine
+from backend.rag_engine import RAGEngine
 
 @pytest.fixture
 def mock_dataset_record():
@@ -27,8 +27,8 @@ def mock_dataset_record():
         "ai_insights": {}
     }
 
-@patch('core.llm_client.LLMClient.generate_chat_completion')
-@patch('core.llm_client.LLMClient.is_configured', return_value=True)
+@patch('backend.llm_client.LLMClient.generate_chat_completion')
+@patch('backend.llm_client.LLMClient.is_configured', return_value=True)
 def test_malicious_user_question(mock_is_configured, mock_generate, mock_dataset_record):
     """Test that a malicious user question is safely wrapped in <user_question> tags and verify security instructions."""
     mock_generate.return_value = {"success": True, "content": "I am a helpful assistant.", "model": "test-model"}
@@ -60,8 +60,8 @@ def test_malicious_user_question(mock_is_configured, mock_generate, mock_dataset
     remaining_prompt = user_prompt[:uq_match.start()] + user_prompt[uq_match.end():]
     assert malicious_query not in remaining_prompt, "Malicious query leaked outside of <user_question> bounds."
 
-@patch('core.llm_client.LLMClient.generate_chat_completion')
-@patch('core.llm_client.LLMClient.is_configured', return_value=True)
+@patch('backend.llm_client.LLMClient.generate_chat_completion')
+@patch('backend.llm_client.LLMClient.is_configured', return_value=True)
 def test_malicious_dataset_value(mock_is_configured, mock_generate, mock_dataset_record):
     """Test that a malicious dataset value is safely wrapped in <dataset_context> tags and verify tag ordering."""
     mock_generate.return_value = {"success": True, "content": "I am a helpful assistant.", "model": "test-model"}
@@ -98,8 +98,8 @@ def test_malicious_dataset_value(mock_is_configured, mock_generate, mock_dataset
     assert pos_end_vg < pos_start_dc, "</verified_ground_truth> must close before <dataset_context> opens."
     assert pos_end_dc < pos_start_uq, "</dataset_context> must close before <user_question> opens."
 
-@patch('core.llm_client.LLMClient.generate_chat_completion')
-@patch('core.llm_client.LLMClient.is_configured', return_value=True)
+@patch('backend.llm_client.LLMClient.generate_chat_completion')
+@patch('backend.llm_client.LLMClient.is_configured', return_value=True)
 def test_instruction_like_wording_in_normal_query(mock_is_configured, mock_generate, mock_dataset_record):
     """Test that a normal analytical question containing instruction-like wording is still passed correctly."""
     mock_generate.return_value = {"success": True, "content": "I am a helpful assistant.", "model": "test-model"}

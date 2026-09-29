@@ -22,14 +22,14 @@ import unittest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from tests.fixtures import make_dataset_a, make_dataset_b, write_csv
-from core.data_processor import DataProcessor
-from core.analyzer import DataAnalyzer
-from core.anomalies import AnomalyDetector
-from core.insights import InsightEngine
-from core.batch_manager import BatchManager
-from core.grok_client import GrokClient
-from core.rag_retriever import RAGRetriever
-from core.qa_engine import DataQAEngine
+from backend.data_processor import DataProcessor
+from backend.analyzer import DataAnalyzer
+from backend.anomalies import AnomalyDetector
+from backend.insights import InsightEngine
+from backend.batch_manager import BatchManager
+from backend.grok_client import GrokClient
+from backend.rag_retriever import RAGRetriever
+from backend.qa_engine import DataQAEngine
 
 
 class TestGrokRAG(unittest.TestCase):
