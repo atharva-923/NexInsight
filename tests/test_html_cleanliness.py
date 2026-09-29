@@ -12,7 +12,7 @@ import unittest
 class TestHTMLCleanliness(unittest.TestCase):
 
     def setUp(self):
-        self.app_path = os.path.join(os.path.dirname(__file__), "..", "app.py")
+        self.app_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "app.py")
         with open(self.app_path, "r", encoding="utf-8") as f:
             self.app_content = f.read()
         self.tree = ast.parse(self.app_content)
